@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  background: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: #f9f9f9
+}
+
+header h1 {
+  font-size: 24px;
+  letter-spacing: 2px
+}
+
+header nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333
+}
+
+.hero {
+  height: 60vh;
+  background: #000 url('your-hero-image.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-text h2 {
+  color: #fff;
+  font-size: 48px;
+  margin: 0
+}
+
+.hero-text p {
+  color: #eee;
+  font-size: 18px
+}
+
+form,
+select {
+  margin: 20px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: transform .3s
+}
+
+.gallery img:hover {
+  transform: scale(1.02)
+}
+
+#lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的攝影作品集</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Victor Photography</h1>
+    <nav>
+      <a href="#">作品集</a>
+      <a href="#">關於我</a>
+      <a href="#">聯絡我</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Capturing Moments</h2>
+      <p>台灣 / Taipei 攝影師作品</p>
+    </div>
+  </section>
+
+  <form id="uploadForm">
+    <input type="file" id="imageFile" accept="image/*" required />
+    <select id="categorySelect" required>
+      <option value="">請選擇分類</option>
+      <option value="人像">人像</option>
+      <option value="風景">風景</option>
+      <option value="街拍">街拍</option>
+      <option value="黑白">黑白</option>
+    </select>
+    <button type="submit">上傳作品</button>
+  </form>
+
+  <label for="filterCategory">依分類篩選：</label>
+  <select id="filterCategory">
+    <option value="全部">全部</option>
+    <option value="人像">人像</option>
+    <option value="風景">風景</option>
+    <option value="街拍">街拍</option>
+    <option value="黑白">黑白</option>
+  </select>
+
+  <div id="gallery" class="gallery"></div>
+
+  <div id="lightbox"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
