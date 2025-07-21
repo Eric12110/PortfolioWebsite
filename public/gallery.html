@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>相簿分類</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head> 
+
+<body>
+    <div id="headerContainer"></div>
+    <div class="container py-5">
+        <h2 id="album-title" class="mb-4">分類相簿</h2>
+        <div id="gallery" class="container py-4"></div>
+    </div>
+
+    <script>
+        // ✅ 初始化 Firebase（請填入你的 config）
+        const firebaseConfig = {
+            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
+            authDomain: "loginregistration-1dba1.firebaseapp.com",
+            databaseURL: "https://loginregistration-1dba1-default-rtdb.firebaseio.com",
+            projectId: "loginregistration-1dba1",
+            storageBucket: "loginregistration-1dba1.firebasestorage.app",
+            messagingSenderId: "445119046757",
+            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
+            measurementId: "G-FWEP0T45HC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ✅ 抓取 query string 內的分類
+        const params = new URLSearchParams(window.location.search);
+        const category = params.get('category') || 'Wedding';
+
+        document.getElementById('album-title').textContent = `📷 分類：${category}`;
+        function loadAlbumsByCategory(category) {
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = "";
+
+            database.ref(category).once("value").then(snapshot => {
+                if (!snapshot.exists()) {
+                    gallery.innerHTML = "<p class='text-muted'>找不到任何資料。</p>";
+                    return;
+                }
+
+                const row = document.createElement("div");
+                row.className = "row g-4";
+
+                snapshot.forEach(personSnap => {
+                    const personName = personSnap.key;
+                    const photos = Object.values(personSnap.val());
+
+                    // 取得第一張作為封面
+                    const coverPhoto = photos[0]?.url || "";
+
+                    const col = document.createElement("div");
+                    col.className = "col-md-4 col-sm-6";
+
+                    col.innerHTML = `
+        <a href="album.html?category=${category}&person=${encodeURIComponent(personName)}" style="text-decoration: none;">
+          <div class="card shadow-sm h-100">
+            <img src="${coverPhoto}" class="card-img-top" style="height: 250px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">${personName}</h5>
+              <p class="card-text text-muted">${photos.length} 張照片</p>
+            </div>
+          </div>
+        </a>
+      `;
+
+                    row.appendChild(col);
+                });
+
+                gallery.appendChild(row);
+            });
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // ✅ 開始載入
+            loadAlbumsByCategory(category);
+        });
+        fetch('header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('headerContainer').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('載入 header 失敗', err);
+            });
+    </script>
+</body>
+
+</html>
