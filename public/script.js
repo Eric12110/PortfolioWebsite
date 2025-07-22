@@ -90,7 +90,7 @@ function loadAlbumsByCategory(category) {
 const firebaseConfig = {
   apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
   authDomain: "loginregistration-1dba1.firebaseapp.com",
-  databaseURL: "https://loginregistration-1dba1-default-rtdb.firebaseio.com",
+  databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app/",
   projectId: "loginregistration-1dba1",
   storageBucket: "loginregistration-1dba1.firebasestorage.app",
   messagingSenderId: "445119046757",
@@ -99,6 +99,10 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+// const appCheck = initializeAppCheck(app, {
+//   provider: new ReCaptchaV3Provider('你在Firebase拿到的_site_key'),
+//   isTokenAutoRefreshEnabled: true, // 自動刷新 token
+// });
 const storage = firebase.storage();
 const database = firebase.database();
 window.uploadImage = function () {
