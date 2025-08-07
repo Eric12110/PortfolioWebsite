@@ -6,12 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>相簿瀏覽</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script> -->
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 </head>
 
-<body oncontextmenu="return false;">
+<body oncontextmenu="return true;">
+    <!-- 編輯相簿功能（預設隱藏） -->
+    <div id="editAlbumSection" style="display: none; margin-bottom: 1rem;">
+        <!-- 多檔案上傳 -->
+        <input id="fileInput" type="file" multiple accept="image/*" class="form-control mb-2">
+        <!-- 上傳按鈕 -->
+        <button id="uploadBtn" class="btn btn-primary">開始上傳</button>
+        <!-- 狀態 -->
+        <div id="uploadStatus" class="mt-2 text-muted"></div>
+        <textarea id="albumDescriptionInput" class="form-control mb-2" placeholder="輸入相簿描述..."></textarea>
+        <button class="btn btn-primary btn-sm" onclick="updateAlbumDescription()">更新描述</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAlbumDescription()">刪除描述</button>
+    </div>
     <div id="headerContainer"></div>
     <div class="container py-5">
         <a href="javascript:history.back()" class="btn btn-secondary mb-4">← 返回分類</a>
@@ -22,6 +37,20 @@
         <div class="row g-4" id="photo-list"></div>
     </div>
     <script>
+        // 取得 cookie 函式
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : null;
+        }
+
+        // 頁面載入後檢查 cookie
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = getCookie('username');
+            if (username) {
+                document.getElementById('editAlbumSection').style.display = 'block';
+            }
+        });
+        // 載入 header
         const firebaseConfig = {
             apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
             authDomain: "loginregistration-1dba1.firebaseapp.com",
@@ -42,16 +71,22 @@
         database.ref(`${category}/${person}/_meta`).once("value").then(metaSnap => {
             const desc = metaSnap.val()?.description || "";
             document.getElementById("albumDescriptionContainer").innerText = desc;
+            // 如果有編輯描述欄位（限 admin 登入）
+            const descInput = document.getElementById("albumDescriptionInput");
+            if (descInput) {
+                descInput.value = desc;
+            }
         });
         function loadAlbumPhotos(category, person) {
             const container = document.getElementById('photo-list');
-
+            container.innerHTML = ""; // 清除舊的照片
             database.ref(`${category}/${person}`).once('value').then(snapshot => {
                 if (!snapshot.exists()) {
                     container.innerHTML = "<p class='text-muted'>找不到任何照片。</p>";
                     return;
                 }
-
+                // 檢查是否登入（有 username cookie）
+                const isLoggedIn = getCookie('username') !== null;
                 snapshot.forEach(photoSnap => {
                     const key = photoSnap.key;
                     if (key === '_meta') {
@@ -64,14 +99,18 @@
                     col.className = "col-md-4 col-sm-6";
 
                     col.innerHTML = `
-            <div class="card h-100 shadow-sm">
-              <img src="${data.url}" class="card-img-top" style="height: 300px; object-fit: cover;">
-              <div class="card-body text-center p-2">
-                <p class="card-text text-muted">${data.description || ""}</p>
-              </div>
-            </div>
-          `;
-
+                    <div class="card h-100 shadow-sm">
+                    <img src="${data.url}" class="card-img-top" style="height: 300px; object-fit: cover;">
+                     ${data.description === undefined ?
+                     "" : `<div class="card-body text-center p-2"><p class="card-text">${data.description}</p>`}
+                        ${isLoggedIn ? `
+                        <input id="desc-${key}" value="${data.description || ''}" class="form-control mb-2">
+                        <button class="btn btn-primary btn-sm" onclick="updatePhoto('${key}')">更新描述</button>
+                        <button class="btn btn-danger btn-sm" onclick="deletePhoto('${key}')">刪除</button>
+                        ` : ""}
+                        </div>
+                    </div>
+                `;
                     container.appendChild(col);
                 });
             });
@@ -79,13 +118,112 @@
 
         loadAlbumPhotos(category, person);
         fetch('header.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('headerContainer').innerHTML = html;
-      })
-      .catch(err => {
-        console.error('載入 header 失敗', err);
-      });
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('headerContainer').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('載入 header 失敗', err);
+            });
+        // ✅ 上傳並新增照片
+        document.getElementById("uploadBtn").addEventListener("click", async () => {
+            const files = document.getElementById("fileInput").files;
+
+            if (!files || files.length === 0) {
+                alert("請選擇至少一張照片");
+                return;
+            }
+
+            const statusDiv = document.getElementById("uploadStatus");
+            statusDiv.innerText = "開始上傳...";
+
+            let uploadedCount = 0;
+            let failedCount = 0;
+
+            for (const file of files) {
+                const timestamp = Date.now();
+                const storagePath = `${category}/${person}/${timestamp}_${file.name}`;
+                const storageRef = firebase.storage().ref(storagePath);
+                const dbRef = firebase.database().ref(`${category}/${person}`).push();
+
+                try {
+                    const snapshot = await storageRef.put(file);
+                    const downloadURL = await snapshot.ref.getDownloadURL();
+
+                    await dbRef.set({
+                        url: downloadURL,
+                        name: file.name,
+                        uploadedAt: new Date().toISOString(),
+                    });
+
+                    uploadedCount++;
+                } catch (error) {
+                    console.error("上傳失敗", error);
+                    failedCount++;
+                }
+
+                statusDiv.innerText = `成功上傳 ${uploadedCount} 張${failedCount > 0 ? `，失敗 ${failedCount} 張` : ""}`;
+            }
+
+            // 所有照片上傳完成後再刷新相簿
+            loadAlbumPhotos(category, person);
+        });
+
+
+
+        //修改照片描述
+        window.updatePhoto = function (photoId) {
+            const newDesc = document.getElementById(`desc-${photoId}`).value;
+            database.ref(`Wedding/${person}/${photoId}`).update({
+                description: newDesc
+            });
+            alert("照片描述已更新");
+            loadAlbumPhotos(category, person);
+        };
+
+        //刪除照片
+        window.deletePhoto = function (photoId) {
+            if (confirm("確定要刪除這張照片？")) {
+                database.ref(`Wedding/${person}/${photoId}`).remove();
+            }
+            alert("照片已刪除");
+            loadAlbumPhotos(category, person);
+        };
+        // 更新相簿描述
+        window.updateAlbumDescription = function () {
+            const newDesc = document.getElementById("albumDescriptionInput").value;
+            database.ref(`${category}/${person}/_meta`).set({
+                description: newDesc
+            }).then(() => {
+                alert("描述已更新");
+                document.getElementById("albumDescriptionContainer").innerText = newDesc;
+            });
+        };
+
+        // 刪除相簿描述
+        window.deleteAlbumDescription = function () {
+            if (confirm("確定要刪除描述嗎？")) {
+                database.ref(`${category}/${person}/_meta`).remove().then(() => {
+                    alert("描述已刪除");
+                    document.getElementById("albumDescriptionContainer").innerText = "";
+                    document.getElementById("albumDescriptionInput").value = "";
+                });
+            }
+        };
+
+        // 儲存相簿描述（只給管理者用）
+        window.saveAlbumDescription = function () {
+            const newDesc = document.getElementById("albumDescriptionInput").value;
+            database.ref(`${category}/${person}/_meta`).set({ description: newDesc })
+                .then(() => {
+                    alert("描述已更新");
+                    document.getElementById("albumDescriptionContainer").innerText = newDesc;
+                })
+                .catch(err => {
+                    console.error("描述儲存失敗", err);
+                    alert("儲存失敗");
+                });
+        };
     </script>
 </body>
 

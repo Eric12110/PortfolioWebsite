@@ -34,6 +34,7 @@
     <input type="text" id="username" placeholder="帳號">
     <input type="password" id="password" placeholder="密碼">
     <button id="loginBtn">登入</button>
+    <button onclick="logout()">登出</button>
   </div>
   <!-- 輪播圖 -->
   <section class="container py-5">
@@ -94,6 +95,13 @@
         console.error('載入 header 失敗', err);
       });
   });
+
+  function logout() {
+      // 清除 Cookie（設成過期）
+      document.cookie = "username=; path=/; max-age=0";
+      alert("已登出");
+      location.reload();
+    }
   //轉webp格式並上傳到Firebase Storage
   // import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
   // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";

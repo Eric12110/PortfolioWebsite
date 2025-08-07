@@ -9,8 +9,12 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   }
 
   if (username === 'admin' && password === 'admin') {
+    console.log('Admin login successful');
     // admin 登入成功，顯示上傳區塊
     alert('登入成功');
+    // 設定 Cookie（有效時間：1 小時）
+    document.cookie = `username=${username}; path=/; max-age=3600`;
+    console.log('Cookie set:', document.cookie);
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('uploadSection').style.display = 'block';
     document.getElementById('message').innerText = `歡迎，管理員 ${username}`;
@@ -164,7 +168,7 @@ document.getElementById("uploadBtn").addEventListener("click", () => {
 
   Array.from(files).forEach(file => {
     const timestamp = Date.now();
-    const storageRef = storage.ref(`${category}/${person}/${timestamp}_${file.name}`);
+    const storageRef = firebase.storage().ref(`${category}/${person}/${timestamp}_${file.name}`);
     const dbRef = database.ref(`${category}/${person}`).push();
 
     storageRef.put(file)
