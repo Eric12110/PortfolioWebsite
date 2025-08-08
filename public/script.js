@@ -17,7 +17,6 @@ document.getElementById('loginBtn').addEventListener('click', () => {
     console.log('Cookie set:', document.cookie);
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('uploadSection').style.display = 'block';
-    document.getElementById('message').innerText = `歡迎，管理員 ${username}`;
   } else {
     // 其他使用者，顯示登入成功訊息但不顯示上傳
     alert('登入失敗');

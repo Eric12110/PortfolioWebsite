@@ -6,17 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>相簿瀏覽</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script> -->
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
+<style>
+    #albumDescriptionContainer {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        max-width: 100%;
+    }
+</style>
 
 <body oncontextmenu="return true;">
     <!-- 編輯相簿功能（預設隱藏） -->
     <div id="editAlbumSection" style="display: none; margin-bottom: 1rem;">
+        <button class="btn btn-success btn-sm" onclick="savePhotoOrder()">儲存排序</button>
+
         <!-- 多檔案上傳 -->
         <input id="fileInput" type="file" multiple accept="image/*" class="form-control mb-2">
         <!-- 上傳按鈕 -->
@@ -30,10 +39,10 @@
     <div id="headerContainer"></div>
     <div class="container py-5">
         <a href="javascript:history.back()" class="btn btn-secondary mb-4">← 返回分類</a>
+        <h2 id="album-title" class="mb-4">相簿名稱</h2>
         <div class="container my-3">
             <p id="albumDescriptionContainer" class="text-muted"></p>
         </div>
-        <h2 id="album-title" class="mb-4">相簿名稱</h2>
         <div class="row g-4" id="photo-list"></div>
     </div>
     <script>
@@ -54,7 +63,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
             authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1-default-rtdb.firebaseio.com",
+            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
             projectId: "loginregistration-1dba1",
             storageBucket: "loginregistration-1dba1.firebasestorage.app",
             messagingSenderId: "445119046757",
@@ -79,42 +88,57 @@
         });
         function loadAlbumPhotos(category, person) {
             const container = document.getElementById('photo-list');
-            container.innerHTML = ""; // 清除舊的照片
+            container.innerHTML = "";
+
             database.ref(`${category}/${person}`).once('value').then(snapshot => {
                 if (!snapshot.exists()) {
                     container.innerHTML = "<p class='text-muted'>找不到任何照片。</p>";
                     return;
                 }
-                // 檢查是否登入（有 username cookie）
+
                 const isLoggedIn = getCookie('username') !== null;
+                const photos = [];
+
                 snapshot.forEach(photoSnap => {
                     const key = photoSnap.key;
-                    if (key === '_meta') {
-                        // 忽略 _meta 節點
-                        return;
-                    }
-                    const data = photoSnap.val();
+                    if (key === '_meta') return;
 
+                    const data = photoSnap.val();
+                    photos.push({ key, ...data });
+                });
+
+                // ✅ 依照 order 欄位排序（預設為 0）
+                photos.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+                photos.forEach(photo => {
                     const col = document.createElement("div");
                     col.className = "col-md-4 col-sm-6";
+                    col.setAttribute("data-id", photo.key); // ✅ 用來儲存順序
 
                     col.innerHTML = `
-                    <div class="card h-100 shadow-sm">
-                    <img src="${data.url}" class="card-img-top" style="height: 300px; object-fit: cover;">
-                     ${data.description === undefined ?
-                     "" : `<div class="card-body text-center p-2"><p class="card-text">${data.description}</p>`}
-                        ${isLoggedIn ? `
-                        <input id="desc-${key}" value="${data.description || ''}" class="form-control mb-2">
-                        <button class="btn btn-primary btn-sm" onclick="updatePhoto('${key}')">更新描述</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletePhoto('${key}')">刪除</button>
-                        ` : ""}
-                        </div>
+                <div class="card h-100 shadow-sm">
+                    <img src="${photo.url}" class="card-img-top" style="height: 300px; object-fit: cover;">
+                    ${photo.description === undefined ? "" : `<div class="card-body text-center p-2"><p class="card-text">${photo.description}</p>`}
+                    ${isLoggedIn ? `
+                        <input id="desc-${photo.key}" value="${photo.description || ''}" class="form-control mb-2">
+                        <button class="btn btn-primary btn-sm" onclick="updatePhoto('${photo.key}')">更新描述</button>
+                        <button class="btn btn-danger btn-sm" onclick="deletePhoto('${photo.key}')">刪除</button>
+                    ` : ""}
                     </div>
-                `;
+                </div>
+            `;
                     container.appendChild(col);
                 });
+
+                // ✅ 初始化拖曳功能
+                if (isLoggedIn) {
+                    Sortable.create(container, {
+                        animation: 150
+                    });
+                }
             });
         }
+
 
         loadAlbumPhotos(category, person);
         fetch('header.html')
@@ -185,10 +209,10 @@
         window.deletePhoto = function (photoId) {
             if (confirm("確定要刪除這張照片？")) {
                 database.ref(`Wedding/${person}/${photoId}`).remove();
+                alert("照片已刪除");
+                loadAlbumPhotos(category, person);
             }
-            alert("照片已刪除");
-            loadAlbumPhotos(category, person);
-        };
+        }
         // 更新相簿描述
         window.updateAlbumDescription = function () {
             const newDesc = document.getElementById("albumDescriptionInput").value;
@@ -224,6 +248,26 @@
                     alert("儲存失敗");
                 });
         };
+        window.savePhotoOrder = function () {
+            const container = document.getElementById('photo-list');
+            const items = container.querySelectorAll("[data-id]");
+            const updates = {};
+
+            items.forEach((item, index) => {
+                const key = item.getAttribute("data-id");
+                updates[`${key}/order`] = index;
+            });
+
+            firebase.database().ref(`${category}/${person}`).update(updates)
+                .then(() => {
+                    alert("照片順序已儲存！");
+                })
+                .catch(err => {
+                    console.error("儲存排序失敗", err);
+                    alert("儲存排序失敗");
+                });
+        }
+
     </script>
 </body>
 

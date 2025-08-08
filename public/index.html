@@ -27,6 +27,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
+<style>
+  #showLoginbtn {
+    opacity: 0;
+    border: none;
+    background: transparent;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>
+
 <body oncontextmenu="return false;">
   <div id="headerContainer"></div>
   <!-- 登入區塊，預設隱藏 -->
@@ -52,7 +65,8 @@
       </button>
     </div>
   </section>
-  <div id="uploadSection" style="display:block;">
+  <button id="showLoginbtn" onclick="showLoginSection()"></button>
+  <div id="uploadSection" style="display:none;">
     <div class="container py-4">
       <h3>上傳照片</h3>
       <div class="mb-3">
@@ -65,9 +79,9 @@
           <option value="Portrait">人像</option>
           <option value="Maternity">孕婦寫真</option>
           <option value="Film">底片</option>
+          <option value="Family">家人</option>
         </select>
       </div>
-
       <div class="mb-3">
         <input type="file" id="fileInput" class="form-control" accept="image/*" multiple>
       </div>
@@ -97,49 +111,31 @@
   });
 
   function logout() {
-      // 清除 Cookie（設成過期）
-      document.cookie = "username=; path=/; max-age=0";
-      alert("已登出");
-      location.reload();
+    // 清除 Cookie（設成過期）
+    document.cookie = "username=; path=/; max-age=0";
+    alert("已登出");
+    location.reload();
+  }
+
+  function showLoginSection() {
+    const loginSection = document.getElementById("loginSection");
+    console.log("顯示登入區塊");
+    loginSection.style.display = "block";
+  }
+
+  // 取得 cookie 函式
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+
+  // 頁面載入後檢查 cookie
+  document.addEventListener('DOMContentLoaded', () => {
+    const username = getCookie('username');
+    if (username) {
+      document.getElementById('uploadSection').style.display = 'block';
     }
-  //轉webp格式並上傳到Firebase Storage
-  // import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
-  // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  // const app = initializeApp(firebaseConfig);
-  // const storage = getStorage(app);
-
-  // function compressImage(file, quality = 0.6) {
-  //   return new Promise((resolve) => {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const img = new Image();
-  //       img.onload = () => {
-  //         const canvas = document.createElement('canvas');
-  //         const maxWidth = 1024;
-  //         const scale = Math.min(maxWidth / img.width, 1);
-  //         canvas.width = img.width * scale;
-  //         canvas.height = img.height * scale;
-  //         const ctx = canvas.getContext('2d');
-  //         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  //         canvas.toBlob((blob) => resolve(blob), 'image/webp', quality);
-  //       };
-  //       img.src = e.target.result;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
-  // }
-
-  // window.uploadCompressedImages = async function () {
-  //   const files = document.getElementById("imageInput").files;
-  //   for (const file of files) {
-  //     const compressedBlob = await compressImage(file, 0.6); // 壓縮品質 0.6
-  //     const storageRef = ref(storage, 'images/' + file.name.split('.')[0] + '.webp');
-  //     await uploadBytes(storageRef, compressedBlob);
-  //     console.log(file.name + " 已上傳！");
-  //   }
-  //   alert("所有圖片已壓縮上傳！");
-  // };
-
+  });
 </script>
 
 </html>

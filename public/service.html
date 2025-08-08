@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>服務內容</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-check.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <style>
+         body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .service-img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .editable-text {
+            white-space: pre-wrap;
+        }
+
+        #serviceImage {
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        #albumDescriptionContainer {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 100%;
+        }
+
+        #serviceImage {
+            max-height: 300px;
+            object-fit: contain;
+        }
+     </style>
+     <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="p-4">
+    <div id="headerContainer"></div>
+
+<div class="container my-5">
+    <h1 class="text-center mb-5 fw-bold text-primary">服務內容</h1>
+
+    <!-- 編輯功能（限登入可見） -->
+    <div id="editSection" class="mb-5 p-4 bg-light border rounded shadow-sm" style="display: none;">
+        <h4 class="mb-3">編輯服務內容</h4>
+        <input type="file" id="serviceImageInput" accept="image/*" class="form-control mb-3">
+        <button class="btn btn-outline-primary mb-4" onclick="uploadServiceImage()">上傳圖片</button>
+
+        <textarea id="serviceTextInput" class="form-control mb-3" rows="6" placeholder="輸入服務描述..."></textarea>
+        <button class="btn btn-success" onclick="saveServiceText()">儲存描述</button>
+    </div>
+
+    <!-- 服務介紹顯示區 -->
+    <div class="card shadow border-0">
+        <div class="row g-0 align-items-center">
+            <!-- 左：文字 -->
+            <div class="col-md-6 p-5">
+                <h2 class="mb-4 fw-bold">服務介紹</h2>
+                <p id="serviceText" class="editable-text text-muted" style="white-space: pre-wrap;"></p>
+            </div>
+            <!-- 右：圖片 -->
+            <div class="col-md-6 text-center p-4">
+                <img id="serviceImage" src="你的圖片URL" class="img-fluid rounded shadow" alt="服務圖片" style="max-height: 400px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('headerContainer').innerHTML = html;
+                    const script = document.createElement("script");
+                    script.src = "script.js";
+                    document.body.appendChild(script);
+                })
+                .catch(err => {
+                    console.error('載入 header 失敗', err);
+                });
+        });
+        // Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
+            authDomain: "loginregistration-1dba1.firebaseapp.com",
+            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app/",
+            projectId: "loginregistration-1dba1",
+            storageBucket: "loginregistration-1dba1.firebasestorage.app",
+            messagingSenderId: "445119046757",
+            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
+            measurementId: "G-FWEP0T45HC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // 顯示已上傳資料
+        function loadServiceContent() {
+            database.ref("ServicePage").once("value").then(snapshot => {
+                const data = snapshot.val();
+                if (data?.imageURL) {
+                    document.getElementById("serviceImage").src = data.imageURL;
+                }
+                if (data?.description) {
+                    document.getElementById("serviceText").innerText = data.description;
+                }
+                document.getElementById("serviceTextInput").value = data?.description || "";
+            });
+        }
+
+        // 判斷是否顯示編輯區塊（有登入 cookie）
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = document.cookie.match(/username=([^;]+)/)?.[1];
+            if (username) {
+                document.getElementById("editSection").style.display = "block";
+            }
+            loadServiceContent();
+        });
+
+        // 上傳圖片
+        function uploadServiceImage() {
+            const fileInput = document.getElementById("serviceImageInput");
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("請選擇一張圖片");
+                return;
+            }
+
+            const storageRef = storage.ref(`services/main_image_${Date.now()}`);
+            storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+                database.ref("ServicePage/imageURL").set(url);
+                document.getElementById("serviceImage").src = url;
+                alert("圖片已上傳並更新！");
+            }).catch(err => {
+                console.error("圖片上傳失敗", err);
+                alert("圖片上傳失敗");
+            });
+        }
+
+        // 儲存文字
+        function saveServiceText() {
+            const newText = document.getElementById("serviceTextInput").value;
+            database.ref("ServicePage/description").set(newText).then(() => {
+                document.getElementById("serviceText").innerText = newText;
+                alert("描述已儲存！");
+            }).catch(err => {
+                console.error("描述儲存失敗", err);
+                alert("儲存失敗");
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <title>Contact 聯絡我們</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .contact-container {
+            margin-top: 60px;
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #86b7fe;
+        }
+
+        .btn-send {
+            font-weight: bold;
+            color: #333;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .contact-image {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="col-md-6 contact-image text-center">
+        <!-- 僅登入者能見的圖片上傳 -->
+        <div id="uploadSection" style="display: none;">
+            <input type="file" id="imageInput" accept="image/*" multiple class="form-control" />
+            <!-- 上傳按鈕 -->
+            <button id="uploadBtn" class="btn btn-primary">開始上傳</button>
+        </div>
+        <div id="uploadStatus" class="mt-2 text-muted"></div>
+    </div>
+
+    <div id="headerContainer"></div>
+    <div class="container contact-container">
+        <h2 class="text-muted mb-5">Contact</h2>
+        <div class="row">
+            <!-- 左邊圖片 -->
+            <div class="col-md-6">
+                <div class="row g-4" id="photo-list"></div>
+            </div>
+            <!-- 右邊表單 -->
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <h4 class="fw-bold">聯絡資訊</h4>
+                    <p class="mb-1">您好，我是 <strong>Victor（小V）</strong></p>
+                    <p class="mb-1">如有任何問題想法，歡迎與我聯絡</p>
+                    <p class="mb-1">
+                        Email:
+                        <a href="mailto:victor7556@gmail.com" class="text-decoration-none">
+                            victor7556@gmail.com
+                        </a>
+                    </p>
+                    <p>或填寫下方表格後點選 <strong>「Send」</strong>，我就會收到囉 ^^</p>
+                </div>
+
+                <form id="contactForm">
+                    <input type="text" name="name" class="form-control mb-2" placeholder="Name *" required />
+                    <input type="tel" name="phone" class="form-control mb-2" placeholder="Phone" />
+                    <textarea name="message" class="form-control mb-3" rows="5" placeholder="Message"
+                        required></textarea>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-primary">Send</button>
+                    </div>
+                </form>
+
+                <div id="statusMessage" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 取得 cookie 函式
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : null;
+        }
+
+        // 頁面載入後檢查 cookie
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = getCookie('username');
+            if (username) {
+                document.getElementById('uploadSection').style.display = 'block';
+            }
+        });
+        // ✅ 初始化 Firebase（請填入你的 config）
+        const firebaseConfig = {
+            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
+            authDomain: "loginregistration-1dba1.firebaseapp.com",
+            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
+            projectId: "loginregistration-1dba1",
+            storageBucket: "loginregistration-1dba1.firebasestorage.app",
+            messagingSenderId: "445119046757",
+            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
+            measurementId: "G-FWEP0T45HC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        (function () {
+            emailjs.init("1Rph-f4izQkVTFQJX"); // 替換成你的 Public Key
+        })();
+        document.getElementById("contactForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const statusMsg = document.getElementById("statusMessage");
+            statusMsg.innerText = "⏳ 發送中...";
+
+            emailjs.sendForm('service_qay4dt9', 'template_ax79npf', "#contactForm")
+                .then(function () {
+                    statusMsg.innerText = "✅ 郵件已成功送出，感謝您的聯絡！";
+                    e.target.reset();
+                }, function (error) {
+                    console.error("發送失敗", error);
+                    statusMsg.innerText = "❌ 發送失敗，請稍後再試一次。";
+                });
+        });
+
+        // ✅ 上傳並新增照片
+        document.getElementById("uploadBtn").addEventListener("click", async () => {
+            const files = document.getElementById("imageInput").files;
+
+            if (!files || files.length === 0) {
+                alert("請選擇至少一張照片");
+                return;
+            }
+
+            const statusDiv = document.getElementById("uploadStatus");
+            statusDiv.innerText = "開始上傳...";
+
+            let uploadedCount = 0;
+            let failedCount = 0;
+
+            for (const file of files) {
+                const timestamp = Date.now();
+                const storagePath = `Contact/${timestamp}_${file.name}`;
+                const storageRef = firebase.storage().ref(storagePath);
+                const dbRef = firebase.database().ref(`Contact`).push();
+
+                try {
+                    const snapshot = await storageRef.put(file);
+                    const downloadURL = await snapshot.ref.getDownloadURL();
+
+                    await dbRef.set({
+                        url: downloadURL,
+                        name: file.name,
+                        uploadedAt: new Date().toISOString(),
+                    });
+
+                    uploadedCount++;
+                } catch (error) {
+                    console.error("上傳失敗", error);
+                    failedCount++;
+                }
+
+                statusDiv.innerText = `成功上傳 ${uploadedCount} 張${failedCount > 0 ? `，失敗 ${failedCount} 張` : ""}`;
+            }
+
+            // 所有照片上傳完成後再刷新相簿
+            loadAlbumPhotos();
+        });
+        function loadAlbumPhotos() {
+            const container = document.getElementById('photo-list');
+            container.innerHTML = "";
+
+            // 這裡改為讀取 Contact 下所有照片
+            firebase.database().ref('Contact').once('value').then(snapshot => {
+                if (!snapshot.exists()) {
+                    container.innerHTML = "<p class='text-muted'>找不到任何照片。</p>";
+                    return;
+                }
+
+                const isLoggedIn = getCookie('username') !== null;
+                const photos = [];
+
+                snapshot.forEach(photoSnap => {
+                    const key = photoSnap.key;
+                    const data = photoSnap.val();
+
+                    // 沒有 order 預設為 0
+                    photos.push({ key, order: data.order || 0, ...data });
+                });
+
+                // 依 order 排序
+                photos.sort((a, b) => a.order - b.order);
+
+                photos.forEach(photo => {
+                    const col = document.createElement("div");
+                    col.className = "col-md-4 col-sm-6";
+                    col.setAttribute("data-id", photo.key);
+
+                    col.innerHTML = `
+                    <div class="resizable draggable" style="width: 100%; max-width: 100%; height: auto; display: inline-block; position: relative;">
+                    <img src="${photo.url}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;">
+                    </div>
+                    ${photo.description === undefined ? "" : `<div class="card-body text-center p-2"><p class="card-text">${photo.description}</p>`}
+                    ${isLoggedIn ? `
+                        <button class="btn btn-danger btn-sm" onclick="deletePhoto('${photo.key}')">刪除</button>
+                    ` : ""}
+                    </div>
+            `;
+
+                    container.appendChild(col);
+                });
+
+                if (isLoggedIn) {
+                    Sortable.create(container, {
+                        animation: 150
+                    });
+                }
+            });
+        }
+        //刪除照片
+        window.deletePhoto = function (photoId) {
+            if (confirm("確定要刪除這張照片？")) {
+                database.ref(`Contact/${photoId}`).remove();
+                alert("照片已刪除");
+                loadAlbumPhotos();
+            }
+        }
+
+        loadAlbumPhotos();
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('headerContainer').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('載入 header 失敗', err);
+            });
+
+        interact('.resizable')
+  .resizable({
+    edges: { left: true, right: true, bottom: true, top: true },
+    listeners: {
+      move (event) {
+        let target = event.target;
+
+        let x = parseFloat(target.getAttribute('data-x')) || 0;
+        let y = parseFloat(target.getAttribute('data-y')) || 0;
+
+        // Resize 元素
+        target.style.width = `${event.rect.width}px`;
+        target.style.height = `${event.rect.height}px`;
+
+        // 同時更新位置
+        x += event.deltaRect.left;
+        y += event.deltaRect.top;
+
+        target.style.transform = `translate(${x}px, ${y}px)`;
+
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      }
+    },
+    modifiers: [
+      interact.modifiers.restrictSize({
+        min: { width: 100, height: 100 },
+        max: { width: 800, height: 800 }
+      })
+    ],
+    inertia: true
+  })
+  .draggable({
+    listeners: {
+      move (event) {
+        let target = event.target;
+        let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      }
+    },
+    inertia: true
+  });
+
+    </script>
+</body>
+
+</html>

@@ -27,7 +27,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
             authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1-default-rtdb.firebaseio.com",
+            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
             projectId: "loginregistration-1dba1",
             storageBucket: "loginregistration-1dba1.firebasestorage.app",
             messagingSenderId: "445119046757",
@@ -45,7 +45,10 @@
         function loadAlbumsByCategory(category) {
             const gallery = document.getElementById("gallery");
             gallery.innerHTML = "";
-
+            console.log(`載入分類：${category}`);
+            database.ref('Family').once("value").then(snapshot => {
+                console.log("Snapshot:", snapshot.val());
+            });
             database.ref(category).once("value").then(snapshot => {
                 if (!snapshot.exists()) {
                     gallery.innerHTML = "<p class='text-muted'>找不到任何資料。</p>";
@@ -66,17 +69,16 @@
                     col.className = "col-md-4 col-sm-6";
 
                     col.innerHTML = `
-        <a href="album.html?category=${category}&person=${encodeURIComponent(personName)}" style="text-decoration: none;">
-          <div class="card shadow-sm h-100">
-            <img src="${coverPhoto}" class="card-img-top" style="height: 250px; object-fit: cover;">
-            <div class="card-body text-center">
-              <h5 class="card-title">${personName}</h5>
-              <p class="card-text text-muted">${photos.length} 張照片</p>
-            </div>
-          </div>
-        </a>
-      `;
-
+                        <a href="album.html?category=${category}&person=${encodeURIComponent(personName)}" style="text-decoration: none;">
+                        <div class="card shadow-sm h-100">
+                            <img src="${coverPhoto}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                            <div class="card-body text-center">
+                            <h5 class="card-title">${personName}</h5>
+                            <p class="card-text text-muted">${photos.length} 張照片</p>
+                            </div>
+                        </div>
+                        </a>
+                    `;
                     row.appendChild(col);
                 });
 
