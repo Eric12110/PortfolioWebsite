@@ -1,29 +1,29 @@
-document.getElementById('loginBtn').addEventListener('click', () => {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+// document.getElementById('loginBtn').addEventListener('click', () => {
+//   const username = document.getElementById('username').value.trim();
+//   const password = document.getElementById('password').value.trim();
 
-  // 這邊只做簡單模擬，正式應該呼叫API驗證
-  if (!username || !password) {
-    alert('請輸入帳號密碼');
-    return;
-  }
+//   // 這邊只做簡單模擬，正式應該呼叫API驗證
+//   if (!username || !password) {
+//     alert('請輸入帳號密碼');
+//     return;
+//   }
 
-  if (username === 'admin' && password === 'admin') {
-    console.log('Admin login successful');
-    // admin 登入成功，顯示上傳區塊
-    alert('登入成功');
-    // 設定 Cookie（有效時間：1 小時）
-    document.cookie = `username=${username}; path=/; max-age=3600`;
-    console.log('Cookie set:', document.cookie);
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('uploadSection').style.display = 'block';
-  } else {
-    // 其他使用者，顯示登入成功訊息但不顯示上傳
-    alert('登入失敗');
-    document.getElementById('message').innerText = `歡迎，${username}`;
-    document.getElementById('loginSection').style.display = 'none';
-  }
-});
+//   if (username === 'admin' && password === 'admin') {
+//     console.log('Admin login successful');
+//     // admin 登入成功，顯示上傳區塊
+//     alert('登入成功');
+//     // 設定 Cookie（有效時間：1 小時）
+//     document.cookie = `username=${username}; path=/; max-age=3600`;
+//     console.log('Cookie set:', document.cookie);
+//     document.getElementById('loginSection').style.display = 'none';
+//     document.getElementById('uploadSection').style.display = 'block';
+//   } else {
+//     // 其他使用者，顯示登入成功訊息但不顯示上傳
+//     alert('登入失敗');
+//     document.getElementById('message').innerText = `歡迎，${username}`;
+//     document.getElementById('loginSection').style.display = 'none';
+//   }
+// });
 const loginBtn = document.getElementById('loginLink');
 
 if (loginBtn) {

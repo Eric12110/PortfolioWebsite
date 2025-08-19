@@ -8,9 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
 </head>
 <style>
     #albumDescriptionContainer {
@@ -19,23 +21,18 @@
         white-space: pre-wrap;
         max-width: 100%;
     }
+
+    #editAlbumSection {
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+        max-width: 800px;
+    }
 </style>
 
 <body oncontextmenu="return true;">
-    <!-- 編輯相簿功能（預設隱藏） -->
-    <div id="editAlbumSection" style="display: none; margin-bottom: 1rem;">
-        <button class="btn btn-success btn-sm" onclick="savePhotoOrder()">儲存排序</button>
-
-        <!-- 多檔案上傳 -->
-        <input id="fileInput" type="file" multiple accept="image/*" class="form-control mb-2">
-        <!-- 上傳按鈕 -->
-        <button id="uploadBtn" class="btn btn-primary">開始上傳</button>
-        <!-- 狀態 -->
-        <div id="uploadStatus" class="mt-2 text-muted"></div>
-        <textarea id="albumDescriptionInput" class="form-control mb-2" placeholder="輸入相簿描述..."></textarea>
-        <button class="btn btn-primary btn-sm" onclick="updateAlbumDescription()">更新描述</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAlbumDescription()">刪除描述</button>
-    </div>
     <div id="headerContainer"></div>
     <div class="container py-5">
         <a href="javascript:history.back()" class="btn btn-secondary mb-4">← 返回分類</a>
@@ -45,20 +42,20 @@
         </div>
         <div class="row g-4" id="photo-list"></div>
     </div>
+    <!-- 編輯相簿功能（預設隱藏） -->
+    <div id="editAlbumSection" style="display: none; margin-bottom: 1rem;">
+        <button class="btn btn-success btn-sm" onclick="savePhotoOrder()">儲存排序</button>
+        <!-- 檔案上傳 -->
+        <input id="fileInput" type="file" multiple accept="image/*" class="form-control mb-2">
+        <!-- 上傳按鈕 -->
+        <button id="uploadBtn" class="btn btn-primary">開始上傳</button>
+        <!-- 狀態 -->
+        <div id="uploadStatus" class="mt-2 text-muted"></div>
+        <textarea id="albumDescriptionInput" class="form-control mb-2" placeholder="輸入相簿描述..."></textarea>
+        <button class="btn btn-primary btn-sm" onclick="updateAlbumDescription()">更新描述</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAlbumDescription()">刪除描述</button>
+    </div>
     <script>
-        // 取得 cookie 函式
-        function getCookie(name) {
-            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-            return match ? match[2] : null;
-        }
-
-        // 頁面載入後檢查 cookie
-        document.addEventListener('DOMContentLoaded', () => {
-            const username = getCookie('username');
-            if (username) {
-                document.getElementById('editAlbumSection').style.display = 'block';
-            }
-        });
         // 載入 header
         const firebaseConfig = {
             apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
@@ -86,17 +83,33 @@
                 descInput.value = desc;
             }
         });
-        function loadAlbumPhotos(category, person) {
+
+        function getCurrentUser() {
+            return new Promise((resolve) => {
+                const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+                    unsubscribe(); // 監聽到狀態後立即取消監聽
+                    resolve(user);
+                });
+            });
+        }
+        async function loadAlbumPhotos(category, person) {
             const container = document.getElementById('photo-list');
             container.innerHTML = "";
-
+            const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
+            // 等待取得目前登入使用者
+            const user = await getCurrentUser();
+            const isLoggedIn = user && user.uid === OWNER_UID;
+            if (isLoggedIn) {
+                document.getElementById("editAlbumSection").style.display = "block";
+            } else {
+                document.getElementById("editAlbumSection").style.display = "none";
+            }
             database.ref(`${category}/${person}`).once('value').then(snapshot => {
                 if (!snapshot.exists()) {
                     container.innerHTML = "<p class='text-muted'>找不到任何照片。</p>";
                     return;
                 }
 
-                const isLoggedIn = getCookie('username') !== null;
                 const photos = [];
 
                 snapshot.forEach(photoSnap => {

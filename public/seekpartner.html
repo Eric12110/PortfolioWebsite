@@ -77,8 +77,10 @@
 
                 <form id="contactForm">
                     <input type="text" name="name" class="form-control mb-2" placeholder="Name *" required />
-                    <input type="tel" name="email" class="form-control mb-2" placeholder="Email" />
+                    <input type="text" name="email" class="form-control mb-2" placeholder="Email *" required />
                     <input type="tel" name="phone" class="form-control mb-2" placeholder="Phone" />
+                    <input type="text" name="facebook" class="form-control mb-2" placeholder="Facebook" required />
+                    <input type="text" name="line" class="form-control mb-2" placeholder="Line" required />
                     <textarea name="message" class="form-control mb-3" rows="5" placeholder="Message"
                         required></textarea>
                     <div class="text-end">
@@ -125,7 +127,7 @@
             const statusMsg = document.getElementById("statusMessage");
             statusMsg.innerText = "⏳ 發送中...";
 
-            emailjs.sendForm('service_qay4dt9', 'template_ax79npf', "#contactForm")
+            emailjs.sendForm('service_hquhn8v', 'template_4qzqt7b', "#contactForm")
                 .then(function () {
                     statusMsg.innerText = "✅ 郵件已成功送出，感謝您的聯絡！";
                     e.target.reset();
