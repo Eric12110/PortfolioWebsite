@@ -8,6 +8,10 @@ using Google.Apis.Auth.OAuth2;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration.GetSection("ECPay");
 
+// 讓 Render 知道監聽哪個 port
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // ✅ 加上這段允許跨網域
 builder.Services.AddCors(options =>
 {
@@ -31,6 +35,9 @@ var app = builder.Build();
 app.UseCors();
 app.UseDefaultFiles(); 
 app.UseStaticFiles();
+
+// 測試首頁
+app.MapGet("/", () => "✅ API is running!");
 
 // === 建立訂單 ===
 app.MapPost("/api/payment/create", async (HttpContext context) =>
