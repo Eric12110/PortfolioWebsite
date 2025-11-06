@@ -1,0 +1,133 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\.firebaserc",
+      "PackagePath": "staticwebassets\\.firebaserc"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\aboutMe.html",
+      "PackagePath": "staticwebassets\\aboutMe.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\admin\\orders.html",
+      "PackagePath": "staticwebassets\\admin\\orders.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\album.html",
+      "PackagePath": "staticwebassets\\album.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\cart.html",
+      "PackagePath": "staticwebassets\\cart.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\contact.html",
+      "PackagePath": "staticwebassets\\contact.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\cors.json",
+      "PackagePath": "staticwebassets\\cors.json"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\firebase.json",
+      "PackagePath": "staticwebassets\\firebase.json"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\gallery.html",
+      "PackagePath": "staticwebassets\\gallery.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\header.html",
+      "PackagePath": "staticwebassets\\header.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo1.jpg",
+      "PackagePath": "staticwebassets\\images\\photo1.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo2.jpg",
+      "PackagePath": "staticwebassets\\images\\photo2.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo3.jpg",
+      "PackagePath": "staticwebassets\\images\\photo3.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo4.jpg",
+      "PackagePath": "staticwebassets\\images\\photo4.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo5.jpg",
+      "PackagePath": "staticwebassets\\images\\photo5.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\photo6.jpg",
+      "PackagePath": "staticwebassets\\images\\photo6.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\admin\\orders.js",
+      "PackagePath": "staticwebassets\\js\\admin\\orders.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\firebase-config.js",
+      "PackagePath": "staticwebassets\\js\\firebase-config.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\payment-success.js",
+      "PackagePath": "staticwebassets\\js\\payment-success.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\payment-success.html",
+      "PackagePath": "staticwebassets\\payment-success.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\payment.html",
+      "PackagePath": "staticwebassets\\payment.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\payment.js",
+      "PackagePath": "staticwebassets\\payment.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\script.js",
+      "PackagePath": "staticwebassets\\script.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\seekpartner.html",
+      "PackagePath": "staticwebassets\\seekpartner.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\service.html",
+      "PackagePath": "staticwebassets\\service.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\style.css",
+      "PackagePath": "staticwebassets\\style.css"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MyBackend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MyBackend.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.MyBackend.props",
+      "PackagePath": "build\\MyBackend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.MyBackend.props",
+      "PackagePath": "buildMultiTargeting\\MyBackend.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.MyBackend.props",
+      "PackagePath": "buildTransitive\\MyBackend.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

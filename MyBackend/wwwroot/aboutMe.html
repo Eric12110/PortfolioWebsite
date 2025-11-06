@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="/js/firebase-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <style>
         /* body {
@@ -174,23 +175,6 @@
             .catch(err => {
                 console.error('載入 header 失敗', err);
             });
-        // Firebase config 請換成你自己的
-        const firebaseConfig = {
-            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
-            authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
-            projectId: "loginregistration-1dba1",
-            storageBucket: "loginregistration-1dba1.firebasestorage.app",
-            messagingSenderId: "445119046757",
-            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
-            measurementId: "G-FWEP0T45HC"
-        };
-
-        // 初始化
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-        const storage = firebase.storage();
 
         // 你的管理者 UID (要改成你的 Firebase Authentication 使用者 uid)
         const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03";
