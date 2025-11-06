@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iT6vGs6PzPFQx8ynP35yx97vJK29xpP3n//BlzmYP/Q=",
+  "Hash": "xUqhM6wevvj7lr5bs8P9qbRpqrzOmAg8DFo/Z/LHYgs=",
   "Source": "MyBackend",
   "BasePath": "_content/MyBackend",
   "Mode": "Default",
@@ -227,12 +227,12 @@
       "OriginalItemSpec": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\payment-success.js"
     },
     {
-      "Identity": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-z3s5e89hqr.gz",
+      "Identity": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-w43r89nhxk.gz",
       "SourceId": "MyBackend",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/MyBackend",
-      "RelativePath": "js/config#[.{fingerprint=z3s5e89hqr}]?.js.gz",
+      "RelativePath": "js/config#[.{fingerprint=w43r89nhxk}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -241,8 +241,8 @@
       "RelatedAsset": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\config.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "sluvi31d4r",
-      "Integrity": "UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg=",
+      "Fingerprint": "4nqm3mkpja",
+      "Integrity": "oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\config.js"
@@ -787,8 +787,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "z3s5e89hqr",
-      "Integrity": "cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=",
+      "Fingerprint": "w43r89nhxk",
+      "Integrity": "YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\config.js"
@@ -4458,12 +4458,12 @@
     },
     {
       "Route": "js/config.js",
-      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-z3s5e89hqr.gz",
+      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-w43r89nhxk.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.006622516556"
+          "Quality": "0.004291845494"
         }
       ],
       "ResponseHeaders": [
@@ -4473,15 +4473,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "150"
+          "Value": "232"
         },
         {
           "Name": "ETag",
-          "Value": "\"UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg=\""
+          "Value": "\"oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4501,13 +4501,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=\""
+          "Value": "W/\"YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY="
+          "Value": "sha256-YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU="
         }
       ]
     },
@@ -4522,7 +4522,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "148"
+          "Value": "233"
         },
         {
           "Name": "Content-Type",
@@ -4530,11 +4530,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=\""
+          "Value": "\"YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4544,13 +4544,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY="
+          "Value": "sha256-YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU="
         }
       ]
     },
     {
       "Route": "js/config.js.gz",
-      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-z3s5e89hqr.gz",
+      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-w43r89nhxk.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4559,7 +4559,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "150"
+          "Value": "232"
         },
         {
           "Name": "Content-Type",
@@ -4567,11 +4567,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg=\""
+          "Value": "\"oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4589,18 +4589,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg="
+          "Value": "sha256-oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk="
         }
       ]
     },
     {
-      "Route": "js/config.z3s5e89hqr.js",
-      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-z3s5e89hqr.gz",
+      "Route": "js/config.w43r89nhxk.js",
+      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-w43r89nhxk.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.006622516556"
+          "Quality": "0.004291845494"
         }
       ],
       "ResponseHeaders": [
@@ -4610,15 +4610,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "150"
+          "Value": "232"
         },
         {
           "Name": "ETag",
-          "Value": "\"UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg=\""
+          "Value": "\"oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4638,13 +4638,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=\""
+          "Value": "W/\"YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "z3s5e89hqr"
+          "Value": "w43r89nhxk"
         },
         {
           "Name": "label",
@@ -4652,12 +4652,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY="
+          "Value": "sha256-YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU="
         }
       ]
     },
     {
-      "Route": "js/config.z3s5e89hqr.js",
+      "Route": "js/config.w43r89nhxk.js",
       "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\config.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -4667,7 +4667,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "148"
+          "Value": "233"
         },
         {
           "Name": "Content-Type",
@@ -4675,11 +4675,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=\""
+          "Value": "\"YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4689,7 +4689,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "z3s5e89hqr"
+          "Value": "w43r89nhxk"
         },
         {
           "Name": "label",
@@ -4697,13 +4697,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY="
+          "Value": "sha256-YDuSdrlnOi3pLaBLDf8hTu9n8XvrVVKkMr+2WpVAqpU="
         }
       ]
     },
     {
-      "Route": "js/config.z3s5e89hqr.js.gz",
-      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-z3s5e89hqr.gz",
+      "Route": "js/config.w43r89nhxk.js.gz",
+      "AssetFile": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\obj\\Debug\\net9.0\\compressed\\hgtjhho1r4-w43r89nhxk.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4712,7 +4712,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "150"
+          "Value": "232"
         },
         {
           "Name": "Content-Type",
@@ -4720,11 +4720,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg=\""
+          "Value": "\"oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 06 Nov 2025 06:12:31 GMT"
+          "Value": "Thu, 06 Nov 2025 07:08:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4742,7 +4742,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "z3s5e89hqr"
+          "Value": "w43r89nhxk"
         },
         {
           "Name": "label",
@@ -4750,7 +4750,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-UMXTNMMhP3q4O0Cu0FI6C/DkqRtFRgvSi2g69/AU/mg="
+          "Value": "sha256-oFR8onnlSP3981uqbam93pierz15OJo4isT8+yDDfmk="
         }
       ]
     },

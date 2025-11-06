@@ -6,11 +6,42 @@ using Google.Apis.Auth.OAuth2;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var config = builder.Configuration.GetSection("ECPay");
 
-// 讓 Render 知道監聽哪個 port
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+// ✅ 判斷執行環境 (Development / Production)
+var env = builder.Environment.EnvironmentName; // 會自動讀 ASPNETCORE_ENVIRONMENT
+
+var config = builder.Configuration;
+
+object ecpayConfig;
+// ⚙️ 本地端讀 appsettings.json
+if (env == "Development")
+{
+    var section = config.GetSection("ECPay");
+    ecpayConfig = new
+    {
+        MerchantID = section["MerchantID"],
+        HashKey = section["HashKey"],
+        HashIV = section["HashIV"],
+        ReturnURL = section["ReturnURL"],
+        OrderResultURL = section["OrderResultURL"]
+    };
+    Console.WriteLine("✅ Loaded ECPay settings from appsettings.json");
+}
+else
+{
+    // ⚙️ Render / Production 讀環境變數
+    ecpayConfig = new
+    {
+        MerchantID = config["ECPay__MerchantID"],
+        HashKey = config["ECPay__HashKey"],
+        HashIV = config["ECPay__HashIV"],
+        ReturnURL = config["ECPay__ReturnURL"],
+        OrderResultURL = config["ECPay__OrderResultURL"]
+    };
+    Console.WriteLine("✅ Loaded ECPay settings from Environment Variables");
+}
+
+dynamic ec = ecpayConfig;
 
 // ✅ 加上這段允許跨網域
 builder.Services.AddCors(options =>
@@ -32,6 +63,23 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// 讓 Render 知道監聽哪個 port
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5101";
+
+if (app.Environment.IsDevelopment())
+{
+    // ✅ 本地開發使用 localhost
+    builder.WebHost.UseUrls($"http://localhost:{port}");
+    Console.WriteLine($"🌐 Development server listening on http://localhost:{port}");
+}
+else
+{
+    // ✅ Render / 雲端使用 0.0.0.0
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+    Console.WriteLine($"🌐 Production server listening on port {port}");
+}
+
 app.UseCors();
 app.UseDefaultFiles(); 
 app.UseStaticFiles();
@@ -52,20 +100,20 @@ app.MapPost("/api/payment/create", async (HttpContext context) =>
 
     var form = new SortedDictionary<string, string>(StringComparer.Ordinal)
     {
-        ["MerchantID"] = merchantId,
+        ["MerchantID"] = ec.MerchantID,
         ["MerchantTradeNo"] = tradeNo,
         ["MerchantTradeDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
         ["PaymentType"] = "aio",
         ["TotalAmount"] = body.Amount.ToString(),
         ["TradeDesc"] = body.Description,
         ["ItemName"] = string.Join("#", body.Items),
-        ["ReturnURL"] = returnUrl,
-        ["OrderResultURL"] = orderResultUrl,
+        ["ReturnURL"] = ec.ReturnURL,
+        ["OrderResultURL"] = ec.OrderResultURL,
         ["ChoosePayment"] = "Credit",
         ["EncryptType"] = "1"
     };
 
-    form["CheckMacValue"] = GenCheckMac(form, config["HashKey"]!, config["HashIV"]!);
+     form["CheckMacValue"] = GenCheckMac(form, ec.HashKey, ec.HashIV);
 
     return Results.Json(new
     {
