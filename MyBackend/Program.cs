@@ -12,6 +12,12 @@ var env = builder.Environment.EnvironmentName; // 會自動讀 ASPNETCORE_ENVIRO
 
 var config = builder.Configuration;
 
+foreach (var kv in config.AsEnumerable())
+{
+    if (kv.Key.Contains("ECPay", StringComparison.OrdinalIgnoreCase))
+        Console.WriteLine($"{kv.Key} = {kv.Value}");
+}
+
 object ecpayConfig;
 // ⚙️ 本地端讀 appsettings.json
 if (env == "Development")
@@ -32,11 +38,11 @@ else
     // ⚙️ Render / Production 讀環境變數
     ecpayConfig = new
     {
-        MerchantID = config["ECPay__MerchantID"],
-        HashKey = config["ECPay__HashKey"],
-        HashIV = config["ECPay__HashIV"],
-        ReturnURL = config["ECPay__ReturnURL"],
-        OrderResultURL = config["ECPay__OrderResultURL"]
+        MerchantID = config["MerchantID"],
+        HashKey = config["HashKey"],
+        HashIV = config["HashIV"],
+        ReturnURL = config["ReturnURL"],
+        OrderResultURL = config["OrderResultURL"]
     };
     Console.WriteLine("✅ Loaded ECPay settings from Environment Variables");
 }
