@@ -7,9 +7,28 @@ using Google.Apis.Auth.OAuth2;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration.GetSection("ECPay");
-        
-var app = builder.Build();
 
+// ✅ 加上這段允許跨網域
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins(
+                "http://127.0.0.1:5500", // Live Server 或 VSCode
+                "http://localhost:5500",
+                "http://127.0.0.1:5101", // 如果你用 VSCode Live Server
+                "http://localhost:5101", // 本地測試用
+                "https://loginregistration-1dba1.web.app" // Firebase 正式網站
+            )
+            .AllowCredentials();
+    });
+});
+
+var app = builder.Build();
+app.UseCors();
 app.UseDefaultFiles(); 
 app.UseStaticFiles();
 

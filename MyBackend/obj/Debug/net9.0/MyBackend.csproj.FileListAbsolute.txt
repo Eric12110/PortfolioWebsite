@@ -18,11 +18,8 @@ D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\jbg0xytnaq-7hcvaqg9g3.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\lnpv26h7wr-nelyh3102o.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\vpz5plotyp-c32902ojdi.gz
-D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\vybkpf4i1x-5al6yq5113.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\sssgqawi1r-tx07ziozsq.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\xyo5sgvswi-g6qasygayh.gz
-D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\eh6aak9038-647p4l15x7.gz
-D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\54b7pizpye-kr5b07z44i.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\3t7137nnp6-o3q00rw9gx.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\0cdymiv9wn-j213v5deuf.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\kyfgkahct0-nrwjf56bs3.gz
@@ -62,3 +59,7 @@ D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\1tu1s32muw-0slyndwde5.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\86p92w53fo-l3i55ncgl9.gz
 D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\omqp0gh3nj-kelkxzieeh.gz
+D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\bin\Debug\net9.0\firebase.json
+D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\eh6aak9038-vm05sqcm2n.gz
+D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\hgtjhho1r4-z3s5e89hqr.gz
+D:\DE\SideProject\PortfolioWebsite\photo-portfolio-firebase\MyBackend\obj\Debug\net9.0\compressed\54b7pizpye-o3dtb0am2h.gz

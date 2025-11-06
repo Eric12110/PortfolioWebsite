@@ -1,23 +1,5 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\.firebaserc'))">
-      <SourceType>Package</SourceType>
-      <SourceId>MyBackend</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/MyBackend</BasePath>
-      <RelativePath>.firebaserc</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>7kuglikxfh</Fingerprint>
-      <Integrity>ScSD07Z7Nsj/V8bIr+WTHbuzLbBrgV+p/qXUMPxe9Sg=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\.firebaserc'))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\aboutMe.html'))">
       <SourceType>Package</SourceType>
       <SourceId>MyBackend</SourceId>
@@ -125,24 +107,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\cors.json'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\firebase.json'))">
-      <SourceType>Package</SourceType>
-      <SourceId>MyBackend</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/MyBackend</BasePath>
-      <RelativePath>firebase.json</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5al6yq5113</Fingerprint>
-      <Integrity>w7SIXt6JEVLTPZZTyidgPfzKTFfTT3bRBjFtmYmVPwA=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\firebase.json'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\gallery.html'))">
       <SourceType>Package</SourceType>
@@ -324,6 +288,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\admin\orders.js'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\config.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>MyBackend</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/MyBackend</BasePath>
+      <RelativePath>js/config.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>z3s5e89hqr</Fingerprint>
+      <Integrity>cSSghBrUUJGsNzvFEfTZt8W1lp1fF8akWKR74i5bvdY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\config.js'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\firebase-config.js'))">
       <SourceType>Package</SourceType>
       <SourceId>MyBackend</SourceId>
@@ -372,8 +354,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>647p4l15x7</Fingerprint>
-      <Integrity>useEHUR+inuPX+aBBODmacvY+Jj/0Ivx8TSXeiKu2qY=</Integrity>
+      <Fingerprint>vm05sqcm2n</Fingerprint>
+      <Integrity>iem9kVy9CKPaIGoZhTeo/V29jiMVjhYY+zwLKzR25Xk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\payment.html'))</OriginalItemSpec>
@@ -390,8 +372,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>kr5b07z44i</Fingerprint>
-      <Integrity>8J2mvPWkTWt9IGdLSbHx8lcCtv8Cip6Jmo2p/lP7UX0=</Integrity>
+      <Fingerprint>o3dtb0am2h</Fingerprint>
+      <Integrity>bA3buSUFCDjDmqeSdewjgxPcOS6LZIdJbzRKIFyH3+0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\payment.js'))</OriginalItemSpec>

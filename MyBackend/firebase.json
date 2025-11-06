@@ -1,11 +1,13 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "wwwroot", 
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
+    "cleanUrls": true,
+    "trailingSlash": false,
     "rewrites": [
       {
         "source": "**",

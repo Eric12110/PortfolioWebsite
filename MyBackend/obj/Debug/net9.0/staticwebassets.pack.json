@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\.firebaserc",
-      "PackagePath": "staticwebassets\\.firebaserc"
-    },
-    {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\aboutMe.html",
       "PackagePath": "staticwebassets\\aboutMe.html"
     },
@@ -27,10 +23,6 @@
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\cors.json",
       "PackagePath": "staticwebassets\\cors.json"
-    },
-    {
-      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\firebase.json",
-      "PackagePath": "staticwebassets\\firebase.json"
     },
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\gallery.html",
@@ -71,6 +63,10 @@
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\admin\\orders.js",
       "PackagePath": "staticwebassets\\js\\admin\\orders.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\config.js",
+      "PackagePath": "staticwebassets\\js\\config.js"
     },
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\firebase-config.js",
