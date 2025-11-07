@@ -1,287 +1,92 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>相簿瀏覽</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>購物車｜Eric Gallery</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- 字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f8f9fb;
+    }
+
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .cart-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+
+    .cart-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .cart-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .total-box {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background: white;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
 </head>
-<style>
-    #albumDescriptionContainer {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-        max-width: 100%;
-    }
 
-    #editAlbumSection {
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: #f9f9f9;
-        max-width: 800px;
-    }
-</style>
-
-<body oncontextmenu="return true;">
+<body>
     <div id="headerContainer"></div>
-    <div class="container py-5">
-        <a href="javascript:history.back()" class="btn btn-secondary mb-4">← 返回分類</a>
-        <h2 id="album-title" class="mb-4">相簿名稱</h2>
-        <div class="container my-3">
-            <p id="albumDescriptionContainer" class="text-muted"></p>
-        </div>
-        <div class="row g-4" id="photo-list"></div>
+  <main class="container py-5">
+    <h2 class="fw-bold mb-4 text-center">購物車清單</h2>
+
+    <div id="cartList" class="row gy-3"></div>
+
+    <div class="total-box mt-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold">總金額：</h5>
+        <h5 class="fw-bold text-danger" id="totalAmount">NT$ 0</h5>
+      </div>
+      <div class="text-end mt-3">
+        <button class="btn btn-primary px-4" onclick="goCheckout()">前往結帳</button>
+      </div>
     </div>
-    <!-- 編輯相簿功能（預設隱藏） -->
-    <div id="editAlbumSection" style="display: none; margin-bottom: 1rem;">
-        <button class="btn btn-success btn-sm" onclick="savePhotoOrder()">儲存排序</button>
-        <!-- 檔案上傳 -->
-        <input id="fileInput" type="file" multiple accept="image/*" class="form-control mb-2">
-        <!-- 上傳按鈕 -->
-        <button id="uploadBtn" class="btn btn-primary">開始上傳</button>
-        <!-- 狀態 -->
-        <div id="uploadStatus" class="mt-2 text-muted"></div>
-        <textarea id="albumDescriptionInput" class="form-control mb-2" placeholder="輸入相簿描述..."></textarea>
-        <button class="btn btn-primary btn-sm" onclick="updateAlbumDescription()">更新描述</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAlbumDescription()">刪除描述</button>
-    </div>
-    <script>
-        // 載入 header
-        const firebaseConfig = {
-            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
-            authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
-            projectId: "loginregistration-1dba1",
-            storageBucket: "loginregistration-1dba1.firebasestorage.app",
-            messagingSenderId: "445119046757",
-            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
-            measurementId: "G-FWEP0T45HC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const params = new URLSearchParams(window.location.search);
-        const category = params.get('category');
-        const person = params.get('person');
+  </main>
 
-        document.getElementById('album-title').textContent = `${person} 的相簿`;
-        database.ref(`${category}/${person}/_meta`).once("value").then(metaSnap => {
-            const desc = metaSnap.val()?.description || "";
-            document.getElementById("albumDescriptionContainer").innerText = desc;
-            // 如果有編輯描述欄位（限 admin 登入）
-            const descInput = document.getElementById("albumDescriptionInput");
-            if (descInput) {
-                descInput.value = desc;
-            }
-        });
+  <footer>
+    <p class="text-muted mb-0">© 2025 Eric Gallery. All rights reserved.</p>
+  </footer>
 
-        function getCurrentUser() {
-            return new Promise((resolve) => {
-                const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-                    unsubscribe(); // 監聽到狀態後立即取消監聽
-                    resolve(user);
-                });
-            });
-        }
-        async function loadAlbumPhotos(category, person) {
-            const container = document.getElementById('photo-list');
-            container.innerHTML = "";
-            const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
-            // 等待取得目前登入使用者
-            const user = await getCurrentUser();
-            const isLoggedIn = user && user.uid === OWNER_UID;
-            if (isLoggedIn) {
-                document.getElementById("editAlbumSection").style.display = "block";
-            } else {
-                document.getElementById("editAlbumSection").style.display = "none";
-            }
-            database.ref(`${category}/${person}`).once('value').then(snapshot => {
-                if (!snapshot.exists()) {
-                    container.innerHTML = "<p class='text-muted'>找不到任何照片。</p>";
-                    return;
-                }
-
-                const photos = [];
-
-                snapshot.forEach(photoSnap => {
-                    const key = photoSnap.key;
-                    if (key === '_meta') return;
-
-                    const data = photoSnap.val();
-                    photos.push({ key, ...data });
-                });
-
-                // ✅ 依照 order 欄位排序（預設為 0）
-                photos.sort((a, b) => (a.order || 0) - (b.order || 0));
-
-                photos.forEach(photo => {
-                    const col = document.createElement("div");
-                    col.className = "col-md-4 col-sm-6";
-                    col.setAttribute("data-id", photo.key); // ✅ 用來儲存順序
-
-                    col.innerHTML = `
-                <div class="card h-100 shadow-sm">
-                    <img src="${photo.url}" class="card-img-top" style="height: 300px; object-fit: cover;">
-                    ${photo.description === undefined ? "" : `<div class="card-body text-center p-2"><p class="card-text">${photo.description}</p>`}
-                    ${isLoggedIn ? `
-                        <input id="desc-${photo.key}" value="${photo.description || ''}" class="form-control mb-2">
-                        <button class="btn btn-primary btn-sm" onclick="updatePhoto('${photo.key}')">更新描述</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletePhoto('${photo.key}')">刪除</button>
-                    ` : ""}
-                    </div>
-                </div>
-            `;
-                    container.appendChild(col);
-                });
-
-                // ✅ 初始化拖曳功能
-                if (isLoggedIn) {
-                    Sortable.create(container, {
-                        animation: 150
-                    });
-                }
-            });
-        }
-
-
-        loadAlbumPhotos(category, person);
-        fetch('header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('headerContainer').innerHTML = html;
-            })
-            .catch(err => {
-                console.error('載入 header 失敗', err);
-            });
-        // ✅ 上傳並新增照片
-        document.getElementById("uploadBtn").addEventListener("click", async () => {
-            const files = document.getElementById("fileInput").files;
-
-            if (!files || files.length === 0) {
-                alert("請選擇至少一張照片");
-                return;
-            }
-
-            const statusDiv = document.getElementById("uploadStatus");
-            statusDiv.innerText = "開始上傳...";
-
-            let uploadedCount = 0;
-            let failedCount = 0;
-
-            for (const file of files) {
-                const timestamp = Date.now();
-                const storagePath = `${category}/${person}/${timestamp}_${file.name}`;
-                const storageRef = firebase.storage().ref(storagePath);
-                const dbRef = firebase.database().ref(`${category}/${person}`).push();
-
-                try {
-                    const snapshot = await storageRef.put(file);
-                    const downloadURL = await snapshot.ref.getDownloadURL();
-
-                    await dbRef.set({
-                        url: downloadURL,
-                        name: file.name,
-                        uploadedAt: new Date().toISOString(),
-                    });
-
-                    uploadedCount++;
-                } catch (error) {
-                    console.error("上傳失敗", error);
-                    failedCount++;
-                }
-
-                statusDiv.innerText = `成功上傳 ${uploadedCount} 張${failedCount > 0 ? `，失敗 ${failedCount} 張` : ""}`;
-            }
-
-            // 所有照片上傳完成後再刷新相簿
-            loadAlbumPhotos(category, person);
-        });
-
-
-
-        //修改照片描述
-        window.updatePhoto = function (photoId) {
-            const newDesc = document.getElementById(`desc-${photoId}`).value;
-            database.ref(`Wedding/${person}/${photoId}`).update({
-                description: newDesc
-            });
-            alert("照片描述已更新");
-            loadAlbumPhotos(category, person);
-        };
-
-        //刪除照片
-        window.deletePhoto = function (photoId) {
-            if (confirm("確定要刪除這張照片？")) {
-                database.ref(`Wedding/${person}/${photoId}`).remove();
-                alert("照片已刪除");
-                loadAlbumPhotos(category, person);
-            }
-        }
-        // 更新相簿描述
-        window.updateAlbumDescription = function () {
-            const newDesc = document.getElementById("albumDescriptionInput").value;
-            database.ref(`${category}/${person}/_meta`).set({
-                description: newDesc
-            }).then(() => {
-                alert("描述已更新");
-                document.getElementById("albumDescriptionContainer").innerText = newDesc;
-            });
-        };
-
-        // 刪除相簿描述
-        window.deleteAlbumDescription = function () {
-            if (confirm("確定要刪除描述嗎？")) {
-                database.ref(`${category}/${person}/_meta`).remove().then(() => {
-                    alert("描述已刪除");
-                    document.getElementById("albumDescriptionContainer").innerText = "";
-                    document.getElementById("albumDescriptionInput").value = "";
-                });
-            }
-        };
-
-        // 儲存相簿描述（只給管理者用）
-        window.saveAlbumDescription = function () {
-            const newDesc = document.getElementById("albumDescriptionInput").value;
-            database.ref(`${category}/${person}/_meta`).set({ description: newDesc })
-                .then(() => {
-                    alert("描述已更新");
-                    document.getElementById("albumDescriptionContainer").innerText = newDesc;
-                })
-                .catch(err => {
-                    console.error("描述儲存失敗", err);
-                    alert("儲存失敗");
-                });
-        };
-        window.savePhotoOrder = function () {
-            const container = document.getElementById('photo-list');
-            const items = container.querySelectorAll("[data-id]");
-            const updates = {};
-
-            items.forEach((item, index) => {
-                const key = item.getAttribute("data-id");
-                updates[`${key}/order`] = index;
-            });
-
-            firebase.database().ref(`${category}/${person}`).update(updates)
-                .then(() => {
-                    alert("照片順序已儲存！");
-                })
-                .catch(err => {
-                    console.error("儲存排序失敗", err);
-                    alert("儲存排序失敗");
-                });
-        }
-
-    </script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="/js/firebase-config.js"></script>  
+  <script src="/js/cart.js"></script>
 </body>
-
 </html>

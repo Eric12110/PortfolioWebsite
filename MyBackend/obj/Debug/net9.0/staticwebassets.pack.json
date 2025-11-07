@@ -5,10 +5,6 @@
       "PackagePath": "staticwebassets\\aboutMe.html"
     },
     {
-      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\admin\\orders.html",
-      "PackagePath": "staticwebassets\\admin\\orders.html"
-    },
-    {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\album.html",
       "PackagePath": "staticwebassets\\album.html"
     },
@@ -57,12 +53,20 @@
       "PackagePath": "staticwebassets\\images\\photo6.jpg"
     },
     {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\薯餅蛋吐司.jpg",
+      "PackagePath": "staticwebassets\\images\\薯餅蛋吐司.jpg"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\images\\起司蛋餅.jpg",
+      "PackagePath": "staticwebassets\\images\\起司蛋餅.jpg"
+    },
+    {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\admin\\orders.js",
-      "PackagePath": "staticwebassets\\js\\admin\\orders.js"
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\cart.js",
+      "PackagePath": "staticwebassets\\js\\cart.js"
     },
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\config.js",
@@ -73,8 +77,28 @@
       "PackagePath": "staticwebassets\\js\\firebase-config.js"
     },
     {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\orders.js",
+      "PackagePath": "staticwebassets\\js\\orders.js"
+    },
+    {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\payment-success.js",
       "PackagePath": "staticwebassets\\js\\payment-success.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\payment.js",
+      "PackagePath": "staticwebassets\\js\\payment.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\products.js",
+      "PackagePath": "staticwebassets\\js\\products.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\js\\productsEdit.js",
+      "PackagePath": "staticwebassets\\js\\productsEdit.js"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\orders.html",
+      "PackagePath": "staticwebassets\\orders.html"
     },
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\payment-success.html",
@@ -85,8 +109,12 @@
       "PackagePath": "staticwebassets\\payment.html"
     },
     {
-      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\payment.js",
-      "PackagePath": "staticwebassets\\payment.js"
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\products.html",
+      "PackagePath": "staticwebassets\\products.html"
+    },
+    {
+      "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\productsEdit.html",
+      "PackagePath": "staticwebassets\\productsEdit.html"
     },
     {
       "Id": "D:\\DE\\SideProject\\PortfolioWebsite\\photo-portfolio-firebase\\MyBackend\\wwwroot\\script.js",

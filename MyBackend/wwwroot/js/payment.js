@@ -13,6 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById('paymentForm');
     const feedback = document.getElementById('feedback');
     const submitBtn = document.getElementById('submitBtn');
+    // ✅ 從 localStorage 讀取購物車資料
+    const storedItems = JSON.parse(localStorage.getItem("checkoutItems") || "[]");
+    const total = localStorage.getItem("checkoutTotal") || 0;
+
+    // 顯示在畫面上（你也可以自訂顯示區域）
+    const descField = document.getElementById("description");
+    const amountField = document.getElementById("amount");
+    const itemsField = document.getElementById("items");
+
+    if (storedItems.length > 0) {
+    const itemNames = storedItems.map(i => `${i.name}x${i.quantity}`).join("#");
+    descField.value = `購買商品共 ${storedItems.length} 項`;
+    amountField.value = total;
+    itemsField.value = itemNames;
+    } else {
+    console.warn("⚠️ 沒有偵測到購物車資料，請重新加入商品");
+    }
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -75,7 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 formElement.submit();
             }, 50);
-
+            localStorage.removeItem("checkoutItems");
+            localStorage.removeItem("checkoutTotal");
+            firebase.database().ref("cart").remove(); // ✅ 清空雲端購物車
         } catch (error) {
             console.error("❌ 建立付款請求失敗:", error);
             feedback.className = 'mt-3 text-danger';
@@ -84,4 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
             submitBtn.innerText = '前往付款';
         }
     });
+
 });

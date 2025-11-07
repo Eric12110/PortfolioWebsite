@@ -10,6 +10,6 @@
             measurementId: "G-FWEP0T45HC"
         };
         firebase.initializeApp(firebaseConfig);
-        //const auth = firebase.auth();
+        const auth = firebase.auth();
         const database = firebase.database();
         const storage = firebase.storage();

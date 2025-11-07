@@ -119,7 +119,48 @@ app.MapPost("/api/payment/create", async (HttpContext context) =>
         ["EncryptType"] = "1"
     };
 
-     form["CheckMacValue"] = GenCheckMac(form, ec.HashKey, ec.HashIV);
+    form["CheckMacValue"] = GenCheckMac(form, ec.HashKey, ec.HashIV);
+    var fakeForm = new Dictionary<string, string>
+    {
+        ["MerchantTradeNo"] = "EC20251106183045001",
+        ["TradeAmt"] = "1500",
+        ["PaymentDate"] = "2025/11/06 18:30:45",
+        ["PaymentType"] = "Credit_CreditCard",
+        ["RtnCode"] = "1",
+        ["RtnMsg"] = "交易成功"
+    };
+
+    // === 呼叫綠界物流 API 建立物流單 ===
+    var logisticsForm = new SortedDictionary<string, string>(StringComparer.Ordinal)
+    {
+        ["MerchantID"] = config["MerchantID"]!,
+        ["MerchantTradeNo"] = fakeForm["MerchantTradeNo"],
+        ["MerchantTradeDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+        ["LogisticsType"] = "CVS",                // 可改成 Home 或 CVS
+        ["LogisticsSubType"] = "FAMI",            // 7-11: UNIMART, 全家: FAMI
+        ["GoodsAmount"] = fakeForm["TradeAmt"],
+        ["CollectionAmount"] = "0",
+        ["IsCollection"] = "N",
+        ["GoodsName"] = "攝影作品",
+        ["SenderName"] = "Eric",
+        ["SenderPhone"] = "0912345678",
+        ["SenderZipCode"] = "100",
+        ["SenderAddress"] = "台北市中正區忠孝西路1號",
+        ["ReceiverName"] = "測試用戶",
+        ["ReceiverPhone"] = "0911222333",
+        ["ReceiverZipCode"] = "100",
+        ["ReceiverAddress"] = "台北市大安區和平東路2段100號",
+        ["ServerReplyURL"] = "https://your-backend.com/api/logistics/return", // 物流回傳用
+        ["ClientReplyURL"] = "https://your-frontend.com/logistics-result.html"
+    };
+
+    using var logisticsClient = new HttpClient();
+    var logisticsContent = new FormUrlEncodedContent(logisticsForm);
+    var logisticsResponse = await logisticsClient.PostAsync("https://logistics-stage.ecpay.com.tw/Express/Create", logisticsContent);
+    var logisticsResult = await logisticsResponse.Content.ReadAsStringAsync();
+
+    Console.WriteLine("🚚 綠界物流建立回傳:");
+    Console.WriteLine(logisticsResult);
 
     return Results.Json(new
     {
@@ -143,21 +184,64 @@ app.MapPost("/api/return", async (HttpContext ctx) =>
     if (!ValidateCheckMac(form, hashKey, hashIV))
     {
         Console.WriteLine("❌ CheckMacValue 不一致 — 可能偽造!");
-        return Results.Text("0|Fail");
+        return Results.Text("0|Fail"); 
     }
 
     Console.WriteLine("✅ CheckMacValue 驗證成功");
+    var fakeForm = new Dictionary<string, string>
+    {
+        ["MerchantTradeNo"] = "EC20251106183045001",
+        ["TradeAmt"] = "1500",
+        ["PaymentDate"] = "2025/11/06 18:30:45",
+        ["PaymentType"] = "Credit_CreditCard",
+        ["RtnCode"] = "1",
+        ["RtnMsg"] = "交易成功"
+    };
 
     // ✅ 整理訂單資料
     var order = new {
-        MerchantTradeNo = form["MerchantTradeNo"],
-        TradeAmt = form["TradeAmt"],
-        PaymentDate = form["PaymentDate"],
-        PaymentType = form["PaymentType"],
-        RtnCode = form["RtnCode"], 
-        RtnMsg = form["RtnMsg"],
+        MerchantTradeNo = fakeForm["MerchantTradeNo"],
+        TradeAmt = fakeForm["TradeAmt"],
+        PaymentDate = fakeForm["PaymentDate"],
+        PaymentType = fakeForm["PaymentType"],
+        RtnCode = fakeForm["RtnCode"], 
+        RtnMsg = fakeForm["RtnMsg"],
         CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
     };
+
+    // === 呼叫綠界物流 API 建立物流單 ===
+    var logisticsForm = new SortedDictionary<string, string>(StringComparer.Ordinal)
+    {
+        ["MerchantID"] = config["MerchantID"]!,
+        ["MerchantTradeNo"] = fakeForm["MerchantTradeNo"],
+        ["MerchantTradeDate"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+        ["LogisticsType"] = "CVS",                // 可改成 Home 或 CVS
+        ["LogisticsSubType"] = "FAMI",            // 7-11: UNIMART, 全家: FAMI
+        ["GoodsAmount"] = fakeForm["TradeAmt"],
+        ["CollectionAmount"] = "0",
+        ["IsCollection"] = "N",
+        ["GoodsName"] = "攝影作品",
+        ["SenderName"] = "Eric",
+        ["SenderPhone"] = "0912345678",
+        ["SenderZipCode"] = "100",
+        ["SenderAddress"] = "台北市中正區忠孝西路1號",
+        ["ReceiverName"] = "測試用戶",
+        ["ReceiverPhone"] = "0911222333",
+        ["ReceiverZipCode"] = "100",
+        ["ReceiverAddress"] = "台北市大安區和平東路2段100號",
+        ["ServerReplyURL"] = "https://your-backend.com/api/logistics/return", // 物流回傳用
+        ["ClientReplyURL"] = "https://your-frontend.com/logistics-result.html"
+    };
+
+    logisticsForm["CheckMacValue"] = GenCheckMac(logisticsForm, hashKey, hashIV);
+
+    using var logisticsClient = new HttpClient();
+    var logisticsContent = new FormUrlEncodedContent(logisticsForm);
+    var logisticsResponse = await logisticsClient.PostAsync("https://logistics-stage.ecpay.com.tw/Express/Create", logisticsContent);
+    var logisticsResult = await logisticsResponse.Content.ReadAsStringAsync();
+
+    Console.WriteLine("🚚 綠界物流建立回傳:");
+    Console.WriteLine(logisticsResult);
 
     // ✅ 寫入 Firebase (REST方式)
     using var http = new HttpClient();
@@ -176,6 +260,29 @@ app.MapPost("/payment/result", () => Results.Redirect("/payment-success.html"));
 
 app.Run();
 
+// 查詢物流狀態 API
+app.MapGet("/api/logistics/query/{tradeNo}", async (string tradeNo, IConfiguration config) =>
+{
+    var merchantId = config["ECPay:MerchantID"];
+    var hashKey = config["ECPay:HashKey"];
+    var hashIV = config["ECPay:HashIV"];
+
+    var form = new SortedDictionary<string, string>
+    {
+        ["MerchantID"] = merchantId!,
+        ["AllPayLogisticsID"] = tradeNo, // 或 LogisticTradeNo
+        ["TimeStamp"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
+    };
+
+    form["CheckMacValue"] = GenCheckMac(form, hashKey!, hashIV!);
+
+    using var client = new HttpClient();
+    var content = new FormUrlEncodedContent(form);
+    var response = await client.PostAsync("https://logistics-stage.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2", content);
+    var result = await response.Content.ReadAsStringAsync();
+
+    return Results.Text(result, "text/plain");
+});
 
 // ===== Helper =====
 
