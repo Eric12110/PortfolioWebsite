@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<style>
+.headerStyle {
+    border-bottom: 0px;
+}
+</style>
+<header class="headerStyle text-center py-4">
+    <h1>Victor Cheng</h1>
+    <p>Photography</p>
+</header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+  <div class="container justify-content-center text-center">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav" style="font-family: Great Vibes, cursive;">
+        <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+        <li class="nav-item"><a class="nav-link" href="aboutMe.html">關於我</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">書廊</a>
+          <ul class="dropdown-menu text-center">
+            <li><a class="dropdown-item" href="gallery.html?category=Wedding">Wedding 婚禮</a></li>
+            <li><a class="dropdown-item" href="gallery.html?category=Pre-Wedding">Pre-Wedding 底紗</a></li>
+            <li><a class="dropdown-item" href="gallery.html?category=Portrait">Portrait 人像</a></li>
+            <li><a class="dropdown-item" href="gallery.html?category=Maternity">Maternity 孕婦寫真</a></li>
+            <li><a class="dropdown-item" href="gallery.html?category=Film">Film 菲林底片</a></li>
+            <li><a class="dropdown-item" href="gallery.html?category=Family">Family 家人</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="service.html">服務</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">聯絡</a></li>
+        <li class="nav-item"><a class="nav-link" href="seekpartner.html">尋找夥伴</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">商品</a></li>
+        <!-- ✅ 登入後才顯示的功能區 -->
+        <div id="authLinks" style="display: none;">
+          <li class="nav-item"><a class="nav-link" href="productsEdit.html">商品編輯</a></li>
+          <li class="nav-item"><a class="nav-link" href="payment.html">線上付款</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.html">購物車</a></li>
+          <li class="nav-item"><a class="nav-link" href="orders.html">訂單查詢</a></li>
+        </div>
+        <div class="ms-auto" id="authArea">
+          <!-- 這裡的內容由 JS 動態注入 -->
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 放在 <body> 底部 -->
+<div id="chatbot" class="chat-bot">
+  <div class="chat-header">客服助理 <button id="chatClose">×</button></div>
+  <div id="chatBody" class="chat-body"></div>
+  <div class="chat-input">
+    <input id="chatText" class="form-control" placeholder="輸入問題，例如：如何付款、查訂單 EC2025..." />
+    <button id="chatSend" class="btn btn-primary">送出</button>
+  </div>
+</div>
+<button id="chatFab" class="chat-fab">💬</button>
+
+<style>
+.chat-fab{position:fixed;right:20px;bottom:20px;border:none;border-radius:50%;width:56px;height:56px;
+box-shadow:0 6px 14px rgba(0,0,0,.15);font-size:24px;background:#0d6efd;color:#fff}
+.chat-bot{position:fixed;right:20px;bottom:86px;width:320px;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:none;overflow:hidden}
+.chat-header{background:#0d6efd;color:#fff;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.chat-body{height:340px;overflow:auto;padding:10px;background:#f8f9fb}
+.chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
+.msg{margin:8px 0;padding:8px 10px;border-radius:10px;max-width:80%}
+.msg.user{background:#e8f0ff;margin-left:auto}
+.msg.bot{background:#fff;border:1px solid #eee}
+ #chatFab{z-index: 9999;}
+ #chatbot{z-index: 9998;}
+</style>
+
+<script src="/js/header.js"></script>
+<script src="/js/config.js"></script>
+
