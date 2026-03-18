@@ -13,6 +13,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <script src="/js/firebase-config.js"></script>  
+    <script src="/js/header.js"></script>
 </head>
 <style>
     #albumDescriptionContainer {
@@ -57,18 +59,6 @@
     </div>
     <script>
         // 載入 header
-        const firebaseConfig = {
-            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
-            authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
-            projectId: "loginregistration-1dba1",
-            storageBucket: "loginregistration-1dba1.firebasestorage.app",
-            messagingSenderId: "445119046757",
-            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
-            measurementId: "G-FWEP0T45HC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
         const params = new URLSearchParams(window.location.search);
         const category = params.get('category');
         const person = params.get('person');
@@ -95,7 +85,7 @@
         async function loadAlbumPhotos(category, person) {
             const container = document.getElementById('photo-list');
             container.innerHTML = "";
-            const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
+            //const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
             // 等待取得目前登入使用者
             const user = await getCurrentUser();
             const isLoggedIn = user && user.uid === OWNER_UID;
@@ -283,5 +273,4 @@
 
     </script>
 </body>
-
 </html>

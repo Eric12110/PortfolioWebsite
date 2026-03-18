@@ -102,20 +102,6 @@
         </div>
     </div>
     <script>
-        // ✅ 初始化 Firebase（請填入你的 config）
-        const firebaseConfig = {
-            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
-            authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app",
-            projectId: "loginregistration-1dba1",
-            storageBucket: "loginregistration-1dba1.firebasestorage.app",
-            messagingSenderId: "445119046757",
-            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
-            measurementId: "G-FWEP0T45HC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage();
-        const database = firebase.database();
         (function () {
             emailjs.init("1Rph-f4izQkVTFQJX"); // 替換成你的 Public Key
         })();
@@ -136,7 +122,6 @@
         });
         // 顯示已上傳資料
         async function loadContactContent() {
-            const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
             // 等待取得目前登入使用者
             const user = await getCurrentUser();
             const isLoggedIn = user && user.uid === OWNER_UID;
@@ -188,7 +173,6 @@
         async function loadAlbumPhotos() {
             const container = document.getElementById('photo-list');
             container.innerHTML = "";
-            const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
             // 等待取得目前登入使用者
             const user = await getCurrentUser();
             const isLoggedIn = user && user.uid === OWNER_UID;
@@ -251,17 +235,12 @@
                 loadContactContent();
             }
         }
+        
+        document.addEventListener("DOMContentLoaded", async () => {
+                loadContactContent();
+        });
+     
 
-        loadContactContent();
-
-        fetch('header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('headerContainer').innerHTML = html;
-            })
-            .catch(err => {
-                console.error('載入 header 失敗', err);
-            });
         // 儲存文字
         function saveContactText() {
             const newText = document.getElementById("ContactTextInput").value;
@@ -275,5 +254,6 @@
         }
     </script>
 </body>
-
+<script src="/js/firebase-config.js"></script>  
+<script src="/js/header.js"></script>
 </html>

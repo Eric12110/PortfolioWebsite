@@ -7,13 +7,9 @@
     <title>相簿瀏覽</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script src="/js/firebase-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* body {
             font-family: "Noto Sans TC", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -156,46 +152,24 @@
 
         <div id="uploadedImages"></div>
     </div>
-
-    <!-- Firebase 8.x SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- interact.js -->
-    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script>
-        fetch('header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('headerContainer').innerHTML = html;
-            })
-            .catch(err => {
-                console.error('載入 header 失敗', err);
-            });
-
-        // 你的管理者 UID (要改成你的 Firebase Authentication 使用者 uid)
-        const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03";
-
         // DOM 元素
         const editSection = document.getElementById("editSection");
         const fileInput = document.getElementById("fileInput");
         const uploadedImages = document.getElementById("uploadedImages");
         const photoGallery = document.getElementById("photoGallery");
-
-        // 監聽登入狀態，決定是否顯示編輯區
-        auth.onAuthStateChanged(user => {
-            if (user && user.uid === OWNER_UID) {
-                editSection.style.display = "block";
-                loadImages();
-            } else {
-                editSection.style.display = "none";
-                loadImages();
-            }
-        });
-
+        document.addEventListener("DOMContentLoaded", async () => {
+                // 監聽登入狀態，決定是否顯示編輯區
+                auth.onAuthStateChanged(user => {
+                    if (user && user.uid === OWNER_UID) {
+                        editSection.style.display = "block";
+                        loadImages();
+                    } else {
+                        editSection.style.display = "none";
+                        loadImages();
+                    }
+                });
+            });
         // 上傳圖片並存資料到 Realtime Database
         function uploadImage() {
             const file = fileInput.files[0];
@@ -371,5 +345,11 @@
         }
     </script>
 </body>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="/js/firebase-config.js"></script>  
+    <script src="/js/header.js"></script>
 </html>

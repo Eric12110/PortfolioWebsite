@@ -1,4 +1,5 @@
 // ✅ 初始化 Firebase（請填入你的 config）
+        const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
         const firebaseConfig = {
             apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
             authDomain: "loginregistration-1dba1.firebaseapp.com",

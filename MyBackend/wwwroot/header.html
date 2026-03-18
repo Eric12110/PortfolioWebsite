@@ -33,11 +33,45 @@
         <li class="nav-item"><a class="nav-link" href="contact.html">聯絡</a></li>
         <li class="nav-item"><a class="nav-link" href="seekpartner.html">尋找夥伴</a></li>
         <li class="nav-item"><a class="nav-link" href="products.html">商品</a></li>
-        <li class="nav-item"><a class="nav-link" href="productsEdit.html">商品編輯</a></li>
-        <li class="nav-item"><a class="nav-link" href="payment.html">線上付款</a></li>
-        <li class="nav-item"><a class="nav-link" href="cart.html">購物車</a></li>
-        <li class="nav-item"><a class="nav-link" href="orders.html">訂單查詢</a></li>
+        <!-- ✅ 登入後才顯示的功能區 -->
+        <div id="authLinks" style="display: none;">
+          <li class="nav-item"><a class="nav-link" href="productsEdit.html">商品編輯</a></li>
+          <li class="nav-item"><a class="nav-link" href="payment.html">線上付款</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.html">購物車</a></li>
+          <li class="nav-item"><a class="nav-link" href="orders.html">訂單查詢</a></li>
+        </div>
+        <div class="ms-auto" id="authArea">
+          <!-- 這裡的內容由 JS 動態注入 -->
+        </div>
       </ul>
     </div>
   </div>
 </nav>
+<!-- 放在 <body> 底部 -->
+<div id="chatbot" class="chat-bot">
+  <div class="chat-header">客服助理 <button id="chatClose">×</button></div>
+  <div id="chatBody" class="chat-body"></div>
+  <div class="chat-input">
+    <input id="chatText" class="form-control" placeholder="輸入問題，例如：如何付款、查訂單 EC2025..." />
+    <button id="chatSend" class="btn btn-primary">送出</button>
+  </div>
+</div>
+<button id="chatFab" class="chat-fab">💬</button>
+
+<style>
+.chat-fab{position:fixed;right:20px;bottom:20px;border:none;border-radius:50%;width:56px;height:56px;
+box-shadow:0 6px 14px rgba(0,0,0,.15);font-size:24px;background:#0d6efd;color:#fff}
+.chat-bot{position:fixed;right:20px;bottom:86px;width:320px;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:none;overflow:hidden}
+.chat-header{background:#0d6efd;color:#fff;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.chat-body{height:340px;overflow:auto;padding:10px;background:#f8f9fb}
+.chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
+.msg{margin:8px 0;padding:8px 10px;border-radius:10px;max-width:80%}
+.msg.user{background:#e8f0ff;margin-left:auto}
+.msg.bot{background:#fff;border:1px solid #eee}
+ #chatFab{z-index: 9999;}
+ #chatbot{z-index: 9998;}
+</style>
+
+<script src="/js/header.js"></script>
+<script src="/js/config.js"></script>
+

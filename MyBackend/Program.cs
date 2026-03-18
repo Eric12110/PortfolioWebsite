@@ -1,8 +1,7 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
+using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -89,9 +88,134 @@ else
 app.UseCors();
 app.UseDefaultFiles(); 
 app.UseStaticFiles();
+var configuration = builder.Configuration;
 
+//var apiKey = configuration["OPENAI_API_KEY"];
+var apiKey = configuration["Gemini_API_KEY"];
+Console.WriteLine($"API KEY: {apiKey}");
 // 測試首頁
 app.MapGet("/", () => "✅ API is running!");
+// === ChatGPT 聊天機器人 API ===
+app.MapPost("/api/chat", async (HttpContext ctx) =>
+{
+    try
+    {
+        // 解析前端傳入的 JSON，例如 { "message": "你好" }
+        var requestBody = await JsonSerializer.DeserializeAsync<JsonElement>(ctx.Request.Body);
+        var userMessage = requestBody.GetProperty("message").GetString();
+
+        var geminiUrl = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={apiKey}";
+
+        // 準備請求內容
+        var payload = new
+        {
+            contents = new[]
+            {
+                new
+                {
+                    parts = new[]
+                    {
+                        new { text = userMessage }
+                    }
+                }
+            }
+        };
+
+        using var http = new HttpClient();
+        var json = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
+        // 呼叫 Gemini API
+        var resp = await http.PostAsync(geminiUrl, json);
+        var raw = await resp.Content.ReadAsStringAsync();
+
+        // 解析回傳 JSON
+        using var doc = JsonDocument.Parse(raw);
+        var reply = doc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .GetString();
+
+        // 回傳給前端
+        await ctx.Response.WriteAsJsonAsync(new { reply });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+        ctx.Response.StatusCode = 500;
+        await ctx.Response.WriteAsJsonAsync(new { reply = "伺服器忙碌，請稍後再試。" });
+    }
+//     var req = await ctx.Request.ReadFromJsonAsync<ChatReq>();
+//     if (req is null || string.IsNullOrWhiteSpace(req.Message))
+//         return Results.BadRequest("缺少 message");
+
+
+//     if (string.IsNullOrWhiteSpace(apiKey))
+//         return Results.Problem("伺服器未設定 OPENAI_API_KEY");
+
+//     using var http = new HttpClient();
+//     http.DefaultRequestHeaders.Authorization =
+//         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+
+//     var body = new
+//     {
+//         model = "gpt-4o-mini", // 或 "gpt-4o"
+//         messages = new[]
+//         {
+//             new { role = "system", content = "你是 Eric Gallery 的智能客服助理，回答需簡短、自然、友善。" },
+//             new { role = "user", content = req.Message }
+//         },
+//         temperature = 0.7
+//     };
+
+//     var resp = await http.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", body);
+//     var raw = await resp.Content.ReadAsStringAsync();
+// Console.WriteLine($"Response JSON:\n{raw}");
+
+//     var json = await resp.Content.ReadFromJsonAsync<JsonElement>();
+
+//     var reply = json
+//         .GetProperty("choices")[0]
+//         .GetProperty("message")
+//         .GetProperty("content")
+//         .GetString();
+
+//     return Results.Json(new { reply });
+});
+
+// 用 TradeNo 查（若你已經有 uid 分區，可先查管理索引或掃描；正式可加索引節點）
+app.MapGet("/api/orders/lookup/{tradeNo}", async (string tradeNo) =>
+{
+    using var http = new HttpClient();
+    // 這是示範：你的結構若是 orders/{uid}/{autoKey}，建議建立一個索引表 tradeIndex/{tradeNo} -> {uid, key}
+    // 這裡先粗暴掃描（小流量 OK，之後我可以幫你做索引資料結構）
+    var url = "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app/orders.json";
+    var json = await http.GetStringAsync(url);
+    if (string.IsNullOrWhiteSpace(json)) return Results.NotFound();
+
+    // 解析尋找符合的 TradeNo
+    var doc = System.Text.Json.JsonDocument.Parse(json).RootElement;
+    foreach (var uidNode in doc.EnumerateObject())
+    {
+        foreach (var orderNode in uidNode.Value.EnumerateObject())
+        {
+            var o = orderNode.Value;
+            var no = o.TryGetProperty("MerchantTradeNo", out var v) ? v.GetString() : null;
+            if (string.Equals(no, tradeNo, StringComparison.OrdinalIgnoreCase))
+            {
+                return Results.Json(new {
+                    MerchantTradeNo = no,
+                    TradeAmt = o.GetProperty("TradeAmt").GetString(),
+                    PaymentDate = o.TryGetProperty("PaymentDate", out var pd) ? pd.GetString() : null,
+                    PaymentType = o.TryGetProperty("PaymentType", out var pt) ? pt.GetString() : null,
+                    RtnCode = o.TryGetProperty("RtnCode", out var rc) ? rc.GetString() : null
+                });
+            }
+        }
+    }
+    return Results.NotFound();
+});
 
 // === 建立訂單 ===
 app.MapPost("/api/payment/create", async (HttpContext context) =>
@@ -335,3 +459,5 @@ static bool ValidateCheckMac(IFormCollection form, string hashKey, string hashIV
 }
 
 public record OrderRequest(int Amount, string Description, List<string> Items);
+
+public record ChatReq(string Message);

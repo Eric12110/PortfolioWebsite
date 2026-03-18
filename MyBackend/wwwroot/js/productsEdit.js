@@ -1,14 +1,4 @@
 // js/products.js
-// 動態載入 header
-    fetch('header.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('headerContainer').innerHTML = html;
-            const script = document.createElement("script");
-            script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js";
-            document.body.appendChild(script);
-        })
-        .catch(err => console.error('載入 header 失敗', err));
 const form = document.getElementById("productForm");
 const table = document.getElementById("productTable");
 

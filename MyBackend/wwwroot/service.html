@@ -10,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="firebase-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-check.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC&display=swap" rel="stylesheet">
@@ -75,40 +74,21 @@
         <button class="btn btn-outline-primary mb-4" onclick="uploadServiceImage()">上傳圖片</button>
 
         <textarea id="serviceTextInput" class="form-control mb-3" rows="6" placeholder="輸入服務描述..."></textarea>
-        <button class="btn btn-success" onclick="saveServiceText()">儲存描述</button>
+        <button class="btn btn-success" id="saveServiceBtn" onclick="saveServiceText()">儲存描述</button>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('headerContainer').innerHTML = html;
-                    const script = document.createElement("script");
-                    script.src = "script.js";
-                    document.body.appendChild(script);
-                })
-                .catch(err => {
-                    console.error('載入 header 失敗', err);
-                });
-        });
-        // Firebase 設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyBg8EzN4UcX0g1JQ-6rhzSHLu_RD5NIPJA",
-            authDomain: "loginregistration-1dba1.firebaseapp.com",
-            databaseURL: "https://loginregistration-1dba1.asia-southeast1.firebasedatabase.app/",
-            projectId: "loginregistration-1dba1",
-            storageBucket: "loginregistration-1dba1.firebasestorage.app",
-            messagingSenderId: "445119046757",
-            appId: "1:445119046757:web:3ee19609f46b8a9b91928c",
-            measurementId: "G-FWEP0T45HC"
-        };
-        const OWNER_UID = "7YL4JKlCh4M5ekDe9SzwAjXqLb03"; // 你的 UID
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
-
+    document.addEventListener("DOMContentLoaded", async () => {
+        loadServiceContent();
         // 顯示已上傳資料
-        function loadServiceContent() {
+       async function loadServiceContent() {
+            const user =  await getCurrentUser();
+            const isLoggedIn = user && user.uid === OWNER_UID;
+            if (!isLoggedIn) {
+                document.getElementById("editSection").style.display = "none";
+            } else {
+                document.getElementById("editSection").style.display = "block";
+            }
+
             database.ref("ServicePage").once("value").then(snapshot => {
                 const data = snapshot.val();
                 if (data?.imageURL) {
@@ -120,6 +100,7 @@
                 document.getElementById("serviceTextInput").value = data?.description || "";
             });
         }
+    });
         function getCurrentUser() {
             return new Promise((resolve) => {
                 const unsubscribe = firebase.auth().onAuthStateChanged(user => {
@@ -128,16 +109,7 @@
                 });
             });
         }
-        // 判斷是否顯示編輯區塊（有登入 cookie）
-        document.addEventListener("DOMContentLoaded", async () => {
-            // 等待取得目前登入使用者
-            const user = await getCurrentUser();
-            const isLoggedIn = user && user.uid === OWNER_UID;
-            if (isLoggedIn) {
-                document.getElementById("editSection").style.display = "block";
-            }
-            loadServiceContent();
-        });
+        
 
         // 上傳圖片
         function uploadServiceImage() {
@@ -172,5 +144,6 @@
         }
     </script>
 </body>
-
+<script src="/js/firebase-config.js"></script>  
+<script src="/js/header.js"></script>
 </html>
